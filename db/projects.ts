@@ -30,6 +30,17 @@ export function migrateProjectsIfNeeded(db: SQLiteDatabase, version: number) {
   seedTable(db);
 }
 
-export function getAllProjects(db: SQLiteDatabase) {
-  return db.getAllAsync<Project>("SELECT * FROM projects");
+export interface GetAllProjectsParams {
+  offset?: number;
+  limit?: number;
+}
+
+export function getAllProjects(
+  db: SQLiteDatabase,
+  { offset = 0, limit = 10 }: GetAllProjectsParams = {},
+) {
+  return db.getAllAsync<Project>("SELECT * FROM projects LIMIT ? OFFSET ?", [
+    limit,
+    offset,
+  ]);
 }
