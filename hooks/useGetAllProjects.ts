@@ -1,5 +1,5 @@
-import { getAllProjects, GetAllProjectsParams } from "@/db/projects";
-import { Project } from "@/model/Project";
+import { getAllTasksByType } from "@/db/tasks";
+import { Task } from "@/model/Task";
 import {
   useInfiniteQuery,
   infiniteQueryOptions,
@@ -8,24 +8,29 @@ import {
 } from "@tanstack/react-query";
 import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
 
+export interface GetAllProjectsParams {
+  offset?: number;
+  limit?: number;
+}
+
 export function getAllProjectsInfiniteQueryOptions(
   db: SQLiteDatabase,
   params?: GetAllProjectsParams,
 ) {
   return infiniteQueryOptions<
-    Project[],
+    Task[],
     Error,
-    InfiniteData<Project[], unknown>,
+    InfiniteData<Task[], unknown>,
     unknown[],
     number
   >({
-    initialPageParam: 0,
+    initialPageParam: params?.offset ?? 0,
     getNextPageParam: (lastPage, pages, lastPageParam) => {
       return lastPageParam + (lastPage.length ?? 0);
     },
     queryKey: ["projects"],
     queryFn: async ({ pageParam = 0 }) =>
-      getAllProjects(db, { ...params, offset: pageParam }),
+      getAllTasksByType(db, "project", pageParam, params?.limit ?? 10),
   });
 }
 

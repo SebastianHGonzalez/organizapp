@@ -4,11 +4,14 @@ import { SQLiteDatabase } from "expo-sqlite";
 function createTableIfNotExists(db: SQLiteDatabase) {
   db.execAsync(`
     CREATE TABLE IF NOT EXISTS task_logs (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      task_id INTEGER NOT NULL,
+      id TEXT PRIMARY KEY,
+      taskId TEXT NOT NULL,
       date TEXT NOT NULL,
-      status TEXT NOT NULL,
-      notes TEXT
+      status TEXT NOT NULL DEFAULT 'not_completed',
+      notes TEXT,
+      createdAt TEXT NOT NULL,
+      updatedAt TEXT,
+      FOREIGN KEY (taskId) REFERENCES tasks(id)
     )
   `);
 }

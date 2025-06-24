@@ -4,12 +4,19 @@ import { SQLiteDatabase } from "expo-sqlite";
 function createTableIfNotExists(db: SQLiteDatabase) {
   db.execAsync(`
     CREATE TABLE IF NOT EXISTS tasks (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id TEXT PRIMARY KEY,
+      parentTaskId TEXT,
+      taskType TEXT NOT NULL DEFAULT 'task',
       name TEXT NOT NULL,
       description TEXT,
-      startDate TEXT NOT NULL,
+      startDate TEXT,
       endDate TEXT,
-      status TEXT NOT NULL
+      priority TEXT,
+      color TEXT,
+      tags TEXT,
+      status TEXT NOT NULL DEFAULT 'active',
+      createdAt TEXT,
+      updatedAt TEXT
     )
   `);
 }
@@ -22,4 +29,16 @@ export function migrateTasksIfNeeded(db: SQLiteDatabase, version: number) {
 
 export function getAllTasks(db: SQLiteDatabase) {
   return db.getAllAsync<Task>("SELECT * FROM tasks");
+}
+
+export function getAllTasksByType(
+  db: SQLiteDatabase,
+  type: Task["taskType"],
+  offset: number,
+  limit: number,
+) {
+  return db.getAllAsync<Task>(
+    `SELECT * FROM tasks WHERE taskType = ? LIMIT ? OFFSET ?`,
+    [type, limit, offset],
+  );
 }

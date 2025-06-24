@@ -2,55 +2,24 @@ import { z } from "zod";
 
 export const taskSchema = z.object({
   id: z.string().uuid(),
-  type: z.literal("task"),
+  parentTaskId: z.string().uuid().optional(),
+  taskType: z
+    .enum(["task", "project", "goal", "habit", "note"])
+    .default("task"),
+
   name: z.string(),
   description: z.string().optional(),
 
-  startDate: z.date(),
+  startDate: z.date().optional(),
   endDate: z.date().optional(),
 
-  priority: z.enum(["low", "medium", "high"]),
+  priority: z.enum(["low", "medium", "high"]).optional(),
+  color: z.string().optional(),
   tags: z.array(z.string()).optional(),
-  projectId: z.string().uuid().optional(),
 
-  repeat: z
-    .discriminatedUnion("type", [
-      z.object({
-        type: z.literal("daily"),
-        time: z.string().optional(),
-      }),
-      z.object({
-        type: z.literal("weekly"),
-        days: z.array(
-          z.enum([
-            "sunday",
-            "monday",
-            "tuesday",
-            "wednesday",
-            "thursday",
-            "friday",
-            "saturday",
-          ]),
-        ),
-        time: z.string().optional(),
-      }),
-      z.object({
-        type: z.literal("monthly"),
-        day: z.number(),
-        time: z.string().optional(),
-      }),
-      z.object({
-        type: z.literal("yearly"),
-        day: z.number(),
-        month: z.number(),
-        time: z.string().optional(),
-      }),
-    ])
-    .optional(),
-
-  status: z.enum(["active", "inactive"]),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  status: z.enum(["active", "inactive"]).default("active"),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
 });
 export type Task = z.infer<typeof taskSchema>;
 
