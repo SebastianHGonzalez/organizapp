@@ -1,7 +1,15 @@
 {
   "tabs": {
     "projects": {
+      "label": "Projects"
+    }
+  },
+  "projects": {
+    "index": {
       "title": "Projects"
+    },
+    "new": {
+      "title": "New project"
     }
   }
 }

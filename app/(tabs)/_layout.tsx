@@ -50,10 +50,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="projects/index"
+        name="projects"
         options={{
-          title: t("tabs.projects.title"),
+          tabBarLabel: t("tabs.projects.label"),
           tabBarIcon: ({ color }) => <TabBarIcon name="folder" color={color} />,
+          headerShown: false,
         }}
       />
       <Tabs.Screen
