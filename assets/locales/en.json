@@ -1,7 +1,19 @@
 {
   "tabs": {
-    "projects": {
-      "label": "Projects"
+    "events": {
+      "label": "Events"
+    },
+    "goals": {
+      "label": "Goals"
+    },
+    "newTask": {
+      "label": "New Task"
+    },
+    "routines": {
+      "label": "Routines"
+    },
+    "finances": {
+      "label": "Finances"
     }
   },
   "projects": {
