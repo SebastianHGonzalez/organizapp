@@ -10,6 +10,13 @@ export const taskSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
 
+  timesOfDay: z
+    .array(z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/))
+    .optional(),
+  daysOfMonth: z.array(z.number().min(1).max(31)).optional(),
+  daysOfWeek: z.array(z.number().min(0).max(6)).optional(),
+  monthsOfYear: z.array(z.number().min(1).max(12)).optional(),
+
   startDate: z.date().optional(),
   endDate: z.date().optional(),
 

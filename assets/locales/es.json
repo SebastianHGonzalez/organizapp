@@ -23,5 +23,52 @@
     "new": {
       "title": "Nuevo proyecto"
     }
+  },
+  "newTask": {
+    "title": "Nueva tarea",
+    "name": {
+      "label": "Nombre",
+      "placeholder": "Nombre de la tarea"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Descripción (opcional)"
+    },
+    "startDate": {
+      "label": "Fecha de inicio",
+      "placeholder": "YYYY-MM-DD"
+    },
+    "endDate": {
+      "label": "Fecha de fin",
+      "placeholder": "YYYY-MM-DD"
+    },
+    "priority": {
+      "label": "Prioridad",
+      "select": {
+        "label": "Seleccionar prioridad"
+      },
+      "low": {
+        "label": "Baja"
+      },
+      "medium": {
+        "label": "Media"
+      },
+      "high": {
+        "label": "Alta"
+      }
+    },
+    "daysOfWeek": {
+      "label": "Días de la semana",
+      "0": "Domingo",
+      "1": "Lunes",
+      "2": "Martes",
+      "3": "Miércoles",
+      "4": "Jueves",
+      "5": "Viernes",
+      "6": "Sábado"
+    },
+    "create": {
+      "label": "Crear tarea"
+    }
   }
 }

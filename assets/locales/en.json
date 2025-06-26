@@ -23,5 +23,52 @@
     "new": {
       "title": "New project"
     }
+  },
+  "newTask": {
+    "title": "New Task",
+    "name": {
+      "label": "Name",
+      "placeholder": "Task name"
+    },
+    "description": {
+      "label": "Description",
+      "placeholder": "Description (optional)"
+    },
+    "startDate": {
+      "label": "Start Date",
+      "placeholder": "YYYY-MM-DD"
+    },
+    "endDate": {
+      "label": "End Date",
+      "placeholder": "YYYY-MM-DD"
+    },
+    "priority": {
+      "label": "Priority",
+      "select": {
+        "label": "Select priority"
+      },
+      "low": {
+        "label": "Low"
+      },
+      "medium": {
+        "label": "Medium"
+      },
+      "high": {
+        "label": "High"
+      }
+    },
+    "daysOfWeek": {
+      "label": "Days of Week",
+      "0": "Sunday",
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday"
+    },
+    "create": {
+      "label": "Create Task"
+    }
   }
 }

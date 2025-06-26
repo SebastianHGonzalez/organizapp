@@ -2,7 +2,6 @@ import { SQLiteDatabase, SQLiteProvider } from "expo-sqlite";
 import React, { PropsWithChildren } from "react";
 import { migrateTasksIfNeeded } from "./tasks";
 import { migrateTaskLogsIfNeeded } from "./task-logs";
-import { migrateTaskSchedulesIfNeeded } from "./task-schedules";
 
 const databaseName = "organizapp.db";
 
@@ -24,7 +23,6 @@ async function migrateDbIfNeeded(db: SQLiteDatabase) {
   for (let version = currentDbVersion; version < DATABASE_VERSION; version++) {
     migrateTasksIfNeeded(db, version);
     migrateTaskLogsIfNeeded(db, version);
-    migrateTaskSchedulesIfNeeded(db, version);
     await db.execAsync(`
       PRAGMA user_version = ${version + 1}
     `);
