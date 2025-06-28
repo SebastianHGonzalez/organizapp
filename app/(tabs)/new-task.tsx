@@ -1,20 +1,11 @@
-import {
-  Button,
-  SafeAreaView,
-  Text,
-  TextInput,
-  View,
-  Picker,
-} from "react-native";
 import { useState } from "react";
+import { Button, SafeAreaView, Text, TextInput, View } from "react-native";
+
 import { t } from "@/i18n/t";
-import { useSQLiteContext } from "expo-sqlite";
-import { createTask } from "@/db/tasks";
 import { Task } from "@/model/Task";
-import { useMutation } from "@tanstack/react-query";
+import { useCreateTask } from "@/hooks/useCreateTask";
 
 export default function NewTask() {
-  const db = useSQLiteContext();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -27,10 +18,8 @@ export default function NewTask() {
   const [daysOfMonth, setDaysOfMonth] = useState<Task["daysOfMonth"]>([]);
   const [monthsOfYear, setMonthsOfYear] = useState<Task["monthsOfYear"]>([]);
   const [tags, setTags] = useState<Task["tags"]>([]);
-  const createTaskMutation = useMutation({
-    mutationKey: ["createTask"],
-    mutationFn: (task: Task) => createTask(db, task),
-  });
+
+  const createTaskMutation = useCreateTask();
 
   const handleCreateTask = async () => {
     await createTaskMutation.mutateAsync({
@@ -145,19 +134,7 @@ export default function NewTask() {
         </View>
 
         <Text>{t("newTask.priority.label")}</Text>
-        <Picker
-          selectedValue={priority}
-          onValueChange={setPriority}
-          style={{ marginBottom: 16 }}
-        >
-          <Picker.Item label={t("newTask.priority.select.label")} value="" />
-          <Picker.Item label={t("newTask.priority.low.label")} value="low" />
-          <Picker.Item
-            label={t("newTask.priority.medium.label")}
-            value="medium"
-          />
-          <Picker.Item label={t("newTask.priority.high.label")} value="high" />
-        </Picker>
+
         <Button
           title={t("newTask.create.label")}
           onPress={handleCreateTask}

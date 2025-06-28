@@ -19,4 +19,7 @@ config.server.enhanceMiddleware = (middleware) => {
   };
 };
 
+// Add support for drizzle
+config.resolver.sourceExts.push("sql");
+
 module.exports = wrapWithReanimatedMetroConfig(config);

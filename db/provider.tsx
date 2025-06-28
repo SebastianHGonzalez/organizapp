@@ -1,30 +1,25 @@
-import { SQLiteDatabase, SQLiteProvider } from "expo-sqlite";
-import React, { PropsWithChildren } from "react";
-import { migrateTasksIfNeeded } from "./tasks";
-import { migrateTaskLogsIfNeeded } from "./task-logs";
+import { createContext, use } from "react";
+import * as SQLite from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import { schema, Table } from "./schema";
 
 const databaseName = "organizapp.db";
+const expo = SQLite.openDatabaseSync(databaseName);
+const db = drizzle(expo, {
+  schema,
+});
 
-export function DbProvider({ children }: PropsWithChildren) {
-  return (
-    <SQLiteProvider databaseName={databaseName} onInit={migrateDbIfNeeded}>
-      {children}
-    </SQLiteProvider>
-  );
+const defaultContextValue = {
+  db,
+  schema,
+} as const;
+export type DBContext = typeof defaultContextValue;
+
+const dbContext = createContext(defaultContextValue);
+
+export function useDBContext() {
+  return use(dbContext);
 }
 
-const DATABASE_VERSION = 1;
+export const DBProvider = dbContext.Provider;
 
-async function migrateDbIfNeeded(db: SQLiteDatabase) {
-  let { user_version: currentDbVersion } = (await db.getFirstAsync<{
-    user_version: number;
-  }>("PRAGMA user_version")) ?? { user_version: 0 };
-
-  for (let version = currentDbVersion; version < DATABASE_VERSION; version++) {
-    migrateTasksIfNeeded(db, version);
-    migrateTaskLogsIfNeeded(db, version);
-    await db.execAsync(`
-      PRAGMA user_version = ${version + 1}
-    `);
-  }
-}

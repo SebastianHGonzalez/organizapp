@@ -1,6 +1,7 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
+import { View } from "react-native";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -49,7 +50,7 @@ export default function TabLayout() {
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ focused, color }) => (
-            <div
+            <View
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -62,7 +63,7 @@ export default function TabLayout() {
               }}
             >
               <FontAwesome name="plus" size={56} color="#fff" />
-            </div>
+            </View>
           ),
         }}
       />
