@@ -46,196 +46,202 @@ import TomatoIcon from "@/assets/svg/tomato-icon.svg";
 import TrashIcon from "@/assets/svg/trash-icon.svg";
 import VerticalDotsIcon from "@/assets/svg/vertical-dots-icon.svg";
 import VeryHappyFaceIcon from "@/assets/svg/very-happy-face-icon.svg";
+import PlusOutlineIcon from "@/assets/svg/plus-outline-icon.svg";
 
 export function DebugAllIcons() {
+  const color = "red";
   return (
     <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
       <View style={styles.iconContainer}>
-        <EyeIcon width={24} height={24} />
+        <EyeIcon color={color} width={24} height={24} />
         <Text>EyeIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <CalendarIcon width={24} height={24} />
+        <CalendarIcon color={color} width={24} height={24} />
         <Text>CalendarIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <BrainIcon width={24} height={24} />
+        <BrainIcon color={color} width={24} height={24} />
         <Text>BrainIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <CheckCircleIcon width={24} height={24} />
+        <CheckCircleIcon color={color} width={24} height={24} />
         <Text>CheckCircleIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <CheckIcon width={24} height={24} />
+        <CheckIcon color={color} width={24} height={24} />
         <Text>CheckIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <CopyIcon width={24} height={24} />
+        <CopyIcon color={color} width={24} height={24} />
         <Text>CopyIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <CrossCircleIcon width={24} height={24} />
+        <CrossCircleIcon color={color} width={24} height={24} />
         <Text>CrossCircleIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <CrossIcon width={24} height={24} />
+        <CrossIcon color={color} width={24} height={24} />
         <Text>CrossIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <EventIcon width={24} height={24} />
+        <EventIcon color={color} width={24} height={24} />
         <Text>EventIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <ExclamationIcon width={24} height={24} />
+        <ExclamationIcon color={color} width={24} height={24} />
         <Text>ExclamationIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <EyeCrossIcon width={24} height={24} />
+        <EyeCrossIcon color={color} width={24} height={24} />
         <Text>EyeCrossIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <FemaleIcon width={24} height={24} />
+        <FemaleIcon color={color} width={24} height={24} />
         <Text>FemaleIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <FileIcon width={24} height={24} />
+        <FileIcon color={color} width={24} height={24} />
         <Text>FileIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <FinanceIcon width={24} height={24} />
+        <FinanceIcon color={color} width={24} height={24} />
         <Text>FinanceIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <FolderIcon width={24} height={24} />
+        <FolderIcon color={color} width={24} height={24} />
         <Text>FolderIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <GoalIcon width={24} height={24} />
+        <GoalIcon color={color} width={24} height={24} />
         <Text>GoalIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <HappyFaceIcon width={24} height={24} />
+        <HappyFaceIcon color={color} width={24} height={24} />
         <Text>HappyFaceIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <HorizontalLineIcon width={24} height={24} />
+        <HorizontalLineIcon color={color} width={24} height={24} />
         <Text>HorizontalLineIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <IdeaIcon width={24} height={24} />
+        <IdeaIcon color={color} width={24} height={24} />
         <Text>IdeaIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <ImageIcon width={24} height={24} />
+        <ImageIcon color={color} width={24} height={24} />
         <Text>ImageIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <InfoIcon width={24} height={24} />
+        <InfoIcon color={color} width={24} height={24} />
         <Text>InfoIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <InversionArrowsIcon width={24} height={24} />
+        <InversionArrowsIcon color={color} width={24} height={24} />
         <Text>InversionArrowsIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <LenguaIcon width={24} height={24} />
+        <LenguaIcon color={color} width={24} height={24} />
         <Text>LenguaIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <LinkIcon width={24} height={24} />
+        <LinkIcon color={color} width={24} height={24} />
         <Text>LinkIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <MinusCircleIcon width={24} height={24} />
+        <MinusCircleIcon color={color} width={24} height={24} />
         <Text>MinusCircleIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <NeutralFaceIcon width={24} height={24} />
+        <NeutralFaceIcon color={color} width={24} height={24} />
         <Text>NeutralFaceIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <NextDayIcon width={24} height={24} />
+        <NextDayIcon color={color} width={24} height={24} />
         <Text>NextDayIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <NoteIcon width={24} height={24} />
+        <NoteIcon color={color} width={24} height={24} />
         <Text>NoteIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <OrderIcon width={24} height={24} />
+        <OrderIcon color={color} width={24} height={24} />
         <Text>OrderIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <PauseIcon width={24} height={24} />
+        <PauseIcon color={color} width={24} height={24} />
         <Text>PauseIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <PenIcon width={24} height={24} />
+        <PenIcon color={color} width={24} height={24} />
         <Text>PenIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <PlusIcon width={24} height={24} />
+        <PlusIcon color={color} width={24} height={24} />
         <Text>PlusIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <PuzzleIcon width={24} height={24} />
+        <PlusOutlineIcon color={color} width={24} height={24} />
+        <Text>PlusOutlineIcon</Text>
+      </View>
+      <View style={styles.iconContainer}>
+        <PuzzleIcon color={color} width={24} height={24} />
         <Text>PuzzleIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <RedirectIcon width={24} height={24} />
+        <RedirectIcon color={color} width={24} height={24} />
         <Text>RedirectIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <RepetitionIcon width={24} height={24} />
+        <RepetitionIcon color={color} width={24} height={24} />
         <Text>RepetitionIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <RoutineIcon width={24} height={24} />
+        <RoutineIcon color={color} width={24} height={24} />
         <Text>RoutineIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <SadFaceIcon width={24} height={24} />
+        <SadFaceIcon color={color} width={24} height={24} />
         <Text>SadFaceIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <SearchIcon width={24} height={24} />
+        <SearchIcon color={color} width={24} height={24} />
         <Text>SearchIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <SortAlphabeticalAscendingIcon width={24} height={24} />
+        <SortAlphabeticalAscendingIcon color={color} width={24} height={24} />
         <Text>SortAlphabeticalAscendingIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <SortAlphabeticalDescendingIcon width={24} height={24} />
+        <SortAlphabeticalDescendingIcon color={color} width={24} height={24} />
         <Text>SortAlphabeticalDescendingIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <SortIcon width={24} height={24} />
+        <SortIcon color={color} width={24} height={24} />
         <Text>SortIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <StarIcon width={24} height={24} />
+        <StarIcon color={color} width={24} height={24} />
         <Text>StarIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <TickIcon width={24} height={24} />
+        <TickIcon color={color} width={24} height={24} />
         <Text>TickIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <TomatoIcon width={24} height={24} />
+        <TomatoIcon color={color} width={24} height={24} />
         <Text>TomatoIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <TrashIcon width={24} height={24} />
+        <TrashIcon color={color} width={24} height={24} />
         <Text>TrashIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <VerticalDotsIcon width={24} height={24} />
+        <VerticalDotsIcon color={color} width={24} height={24} />
         <Text>VerticalDotsIcon</Text>
       </View>
       <View style={styles.iconContainer}>
-        <VeryHappyFaceIcon width={24} height={24} />
+        <VeryHappyFaceIcon color={color} width={24} height={24} />
         <Text>VeryHappyFaceIcon</Text>
       </View>
     </View>

@@ -1,6 +1,4 @@
 import React from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
 import { View } from "react-native";
 
@@ -12,14 +10,7 @@ import RoutineIcon from "@/assets/svg/routine-icon.svg";
 import GoalIcon from "@/assets/svg/goal-icon.svg";
 import EventIcon from "@/assets/svg/event-icon.svg";
 import FinanceIcon from "@/assets/svg/finance-icon.svg";
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+import PlusOutlineIcon from "@/assets/svg/plus-outline-icon.svg";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -60,10 +51,15 @@ export default function TabLayout() {
                 backgroundColor: "#A259FF",
                 marginBottom: 25,
                 borderRadius: 1000,
-                padding: 10,
+                padding: 20,
               }}
             >
-              <Ionicons name="add" size={56} color="#fff" />
+              <PlusOutlineIcon
+                width={56}
+                height={56}
+                color="#fff"
+                strokeWidth={50}
+              />
             </View>
           ),
         }}

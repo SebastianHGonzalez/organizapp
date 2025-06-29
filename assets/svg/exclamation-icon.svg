@@ -3,8 +3,7 @@
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >
-      <rect fill="none" />
-      <g fill="none" stroke="black">
+      <g stroke="currentColor" fill="none">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -14,4 +13,3 @@
         <circle cx="12" cy="19" r="1" strokeWidth="2" />
       </g>
     </svg>
-
