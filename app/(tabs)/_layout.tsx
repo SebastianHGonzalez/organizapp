@@ -1,5 +1,6 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
 import { View } from "react-native";
 
@@ -7,6 +8,10 @@ import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { t } from "@/i18n/t";
+import RoutineIcon from "@/assets/svg/routine-icon.svg";
+import GoalIcon from "@/assets/svg/goal-icon.svg";
+import EventIcon from "@/assets/svg/event-icon.svg";
+import FinanceIcon from "@/assets/svg/finance-icon.svg";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -31,18 +36,14 @@ export default function TabLayout() {
         name="events"
         options={{
           tabBarLabel: t("tabs.events.label"),
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="calendar" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <EventIcon color={color} />,
         }}
       />
       <Tabs.Screen
         name="goals"
         options={{
           tabBarLabel: t("tabs.goals.label"),
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="flag-checkered" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <GoalIcon color={color} />,
         }}
       />
       <Tabs.Screen
@@ -62,7 +63,7 @@ export default function TabLayout() {
                 padding: 10,
               }}
             >
-              <FontAwesome name="plus" size={56} color="#fff" />
+              <Ionicons name="add" size={56} color="#fff" />
             </View>
           ),
         }}
@@ -71,16 +72,14 @@ export default function TabLayout() {
         name="routines"
         options={{
           tabBarLabel: t("tabs.routines.label"),
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="bullseye" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <RoutineIcon color={color} />,
         }}
       />
       <Tabs.Screen
         name="finances"
         options={{
           tabBarLabel: t("tabs.finances.label"),
-          tabBarIcon: ({ color }) => <TabBarIcon name="dollar" color={color} />,
+          tabBarIcon: ({ color }) => <FinanceIcon color={color} />,
         }}
       />
     </Tabs>

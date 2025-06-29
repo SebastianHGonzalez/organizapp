@@ -35,3 +35,11 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# build files
+android/
+ios/
+web-build/
+
+# svg types
+svg-types.d.ts

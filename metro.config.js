@@ -22,4 +22,9 @@ config.server.enhanceMiddleware = (middleware) => {
 // Add support for drizzle
 config.resolver.sourceExts.push("sql");
 
+// Add support for SVGs
+config.transformer.babelTransformerPath = require.resolve("react-native-svg-transformer/expo");
+config.resolver.assetExts = config.resolver.assetExts.filter(ext => ext !== "svg");
+config.resolver.sourceExts.push('svg');
+
 module.exports = wrapWithReanimatedMetroConfig(config);
