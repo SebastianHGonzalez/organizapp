@@ -2,7 +2,7 @@ import { Task } from "@/model/Task";
 import { FlashList } from "@shopify/flash-list";
 import { Suspense, use, useMemo } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Text } from "react-native";
+import { Text } from "@/components/Themed";
 
 export function ProjectList() {
   const projectsPromise = useMemo(() => Promise.resolve([]), []);

@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
+import { Text, View } from "@/components/Themed";
 import BrainIcon from "@/assets/svg/brain-icon.svg";
 import CalendarIcon from "@/assets/svg/calendar-icon.svg";
 import CheckCircleIcon from "@/assets/svg/check-circle-icon.svg";

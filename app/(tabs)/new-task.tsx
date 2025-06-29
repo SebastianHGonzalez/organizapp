@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Button, SafeAreaView, Text, TextInput, View } from "react-native";
+import { Button, SafeAreaView, TextInput } from "react-native";
+import { Text, View } from "@/components/Themed";
 
 import { t } from "@/i18n/t";
 import { Task } from "@/model/Task";
-import { useCreateTask } from "@/hooks/useCreateTask";
+import { useCreateTask } from "@/hooks/data/tasks/useCreateTask";
 
 export default function NewTask() {
   const [name, setName] = useState("");

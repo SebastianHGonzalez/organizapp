@@ -3,8 +3,8 @@ import { Tabs } from "expo-router";
 import { View } from "react-native";
 
 import Colors from "@/constants/Colors";
-import { useColorScheme } from "@/components/useColorScheme";
-import { useClientOnlyValue } from "@/components/useClientOnlyValue";
+import { useColorScheme } from "@/hooks/theme/useColorScheme";
+import { useClientOnlyValue } from "@/hooks/useClientOnlyValue";
 import { t } from "@/i18n/t";
 import RoutineIcon from "@/assets/svg/routine-icon.svg";
 import GoalIcon from "@/assets/svg/goal-icon.svg";
