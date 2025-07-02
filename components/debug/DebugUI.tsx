@@ -21,7 +21,11 @@ export function DebugUI() {
 
       <Container mergeBottom>
         <Text variant="heading1">Heading 1</Text>
-        <Text variant="body">Body</Text>
+        <Text variant="body">
+          Body: Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Quisquam, quos.
+        </Text>
+        <Text variant="subtitle">Subtitle</Text>
         <Text variant="caption">Caption</Text>
         <Text variant="label">Label</Text>
         <TextInput placeholder="Input" />

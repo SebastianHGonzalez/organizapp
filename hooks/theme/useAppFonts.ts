@@ -15,6 +15,8 @@ export function useAppFonts({
         [FontFamily.BebasNeue]: require("@/assets/fonts/BebasNeue-Regular.ttf"),
         [FontFamily.Roboto]: require("@/assets/fonts/Roboto-Regular.ttf"),
         [FontFamily.SpaceMono]: require("@/assets/fonts/SpaceMono-Regular.ttf"),
+        [FontFamily.AlPedo]: require("@/assets/fonts/Alpedo-Regular.ttf"),
+        [FontFamily.Poppins]: require("@/assets/fonts/Poppins-Regular.ttf"),
     });
 
     useEffect(() => {
