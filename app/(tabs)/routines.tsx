@@ -1,8 +1,8 @@
 import { Text } from "@/components/common/Text";
 import { useGetAllTasks } from "@/hooks/data/tasks/useGetAllTasks";
 import { FlashList } from "@shopify/flash-list";
-import { ScrollView } from "react-native-gesture-handler";
 import { DebugAllIcons } from "@/components/debug/DebugAllIcons";
+import { RootView } from "@/components/common/RootView";
 
 export default function Routines() {
   const { data, isLoading, isError, fetchNextPage } = useGetAllTasks({
@@ -11,7 +11,7 @@ export default function Routines() {
   const tasks = data?.pages.flatMap((page) => page);
 
   return (
-    <ScrollView>
+    <RootView>
       <Text variant="heading1" accessibilityRole="header">
         Routines Screen
       </Text>
@@ -27,6 +27,6 @@ export default function Routines() {
           fetchNextPage();
         }}
       />
-    </ScrollView>
+    </RootView>
   );
 }

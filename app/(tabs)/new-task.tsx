@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { SafeAreaView } from "react-native";
 import { View } from "@/components/common/View";
 import { Text } from "@/components/common/Text";
 import { TextInput } from "@/components/common/TextInput";
@@ -8,6 +7,7 @@ import { Button } from "@/components/common/Button";
 import { t } from "@/i18n/t";
 import { Task } from "@/model/Task";
 import { useCreateTask } from "@/hooks/data/tasks/useCreateTask";
+import { RootView } from "@/components/common/RootView";
 
 export default function NewTask() {
   const [name, setName] = useState("");
@@ -46,7 +46,7 @@ export default function NewTask() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, padding: 16 }}>
+    <RootView>
       <Text variant="heading1" accessibilityRole="header">
         {t("newTask.title")}
       </Text>
@@ -143,6 +143,6 @@ export default function NewTask() {
           disabled={createTaskMutation.isPending}
         />
       </View>
-    </SafeAreaView>
+    </RootView>
   );
 }

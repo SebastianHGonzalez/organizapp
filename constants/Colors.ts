@@ -40,32 +40,38 @@ const Palette = {
   }
 } as const;
 
+const colorTokens = {
+  primary: "blue-gem",
+  secondary: "fuchsia-pink",
+  neutral: "zinc",
+} as const;
+
 const colors = {
   light: {
-    text: Palette["zinc"]["900"],
-    textMuted: Palette["zinc"]["500"],
-    tint: Palette["blue-gem"]["500"],
-    tabIconDefault: Palette["zinc"]["500"],
-    tabIconSelected: Palette["blue-gem"]["500"],
+    text: Palette[colorTokens.neutral]["900"],
+    textMuted: Palette[colorTokens.neutral]["500"],
+    tint: Palette[colorTokens.primary]["500"],
+    tabIconDefault: Palette[colorTokens.neutral]["500"],
+    tabIconSelected: Palette[colorTokens.primary]["500"],
 
-    background: Palette["zinc"]["50"],
-    containerBackground: Palette["zinc"]["100"],
-    inputBackground: Palette["zinc"]["200"],
-    border: Palette["zinc"]["200"],
-    tintBorder: Palette["blue-gem"]["600"],
+    background: Palette[colorTokens.neutral]["50"],
+    containerBackground: Palette[colorTokens.neutral]["100"],
+    inputBackground: Palette[colorTokens.neutral]["200"],
+    border: Palette[colorTokens.neutral]["200"],
+    tintBorder: Palette[colorTokens.primary]["600"],
   },
   dark: {
-    text: Palette["zinc"]["50"],
-    textMuted: Palette["zinc"]["400"],
-    tint: Palette["blue-gem"]["400"],
-    tabIconDefault: Palette["zinc"]["400"],
-    tabIconSelected: Palette["blue-gem"]["400"],
+    text: Palette[colorTokens.neutral]["50"],
+    textMuted: Palette[colorTokens.neutral]["400"],
+    tint: Palette[colorTokens.primary]["400"],
+    tabIconDefault: Palette[colorTokens.neutral]["400"],
+    tabIconSelected: Palette[colorTokens.primary]["400"],
 
-    background: Palette["zinc"]["950"],
-    containerBackground: Palette["zinc"]["900"],
-    inputBackground: Palette["zinc"]["800"],
-    border: Palette["zinc"]["800"],
-    tintBorder: Palette["blue-gem"]["500"],
+    background: Palette[colorTokens.neutral]["950"],
+    containerBackground: Palette[colorTokens.neutral]["900"],
+    inputBackground: Palette[colorTokens.neutral]["800"],
+    border: Palette[colorTokens.neutral]["800"],
+    tintBorder: Palette[colorTokens.primary]["500"],
   },
 } as const;
 
