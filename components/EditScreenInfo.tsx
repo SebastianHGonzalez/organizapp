@@ -2,36 +2,21 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { ExternalLink } from "./ExternalLink";
-import { MonoText } from "./StyledText";
-import { Text, View } from "./Themed";
-
-import Colors from "@/constants/Colors";
+import { Text } from "./common/Text";
+import { View } from "./common/View";
+import { Code } from "./common/Code";
 
 export default function EditScreenInfo({ path }: { path: string }) {
   return (
     <View>
       <View style={styles.getStartedContainer}>
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
+        <Text variant="body" accessibilityRole="text">
           Open up the code for this screen:
         </Text>
 
-        <View
-          style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-          darkColor="rgba(255,255,255,0.05)"
-          lightColor="rgba(0,0,0,0.05)"
-        >
-          <MonoText>{path}</MonoText>
-        </View>
+        <Code>{path}</Code>
 
-        <Text
-          style={styles.getStartedText}
-          lightColor="rgba(0,0,0,0.8)"
-          darkColor="rgba(255,255,255,0.8)"
-        >
+        <Text variant="body" accessibilityRole="text">
           Change any of the text, save the file, and your app will automatically
           update.
         </Text>
@@ -42,7 +27,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
           style={styles.helpLink}
           href="https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
         >
-          <Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
+          <Text variant="body" accessibilityRole="text">
             Tap here if your app doesnt automatically update after making
             changes
           </Text>

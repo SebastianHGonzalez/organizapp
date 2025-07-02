@@ -42,7 +42,7 @@ const Palette = {
 
 const colors = {
   light: {
-    text: Palette["zinc"]["950"],
+    text: Palette["zinc"]["900"],
     textMuted: Palette["zinc"]["500"],
     tint: Palette["blue-gem"]["500"],
     tabIconDefault: Palette["zinc"]["500"],
@@ -50,6 +50,7 @@ const colors = {
 
     background: Palette["zinc"]["50"],
     containerBackground: Palette["zinc"]["100"],
+    inputBackground: Palette["zinc"]["200"],
     border: Palette["zinc"]["200"],
     tintBorder: Palette["blue-gem"]["600"],
   },
@@ -62,6 +63,7 @@ const colors = {
 
     background: Palette["zinc"]["950"],
     containerBackground: Palette["zinc"]["900"],
+    inputBackground: Palette["zinc"]["800"],
     border: Palette["zinc"]["800"],
     tintBorder: Palette["blue-gem"]["500"],
   },

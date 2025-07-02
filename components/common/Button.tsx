@@ -1,12 +1,11 @@
-import { Text, ViewProps } from "@/components/Themed";
-import { View } from "@/components/Themed";
-import Fonts from "@/constants/Fonts";
+import { Text } from "@/components/common/Text";
 import { useThemeColors } from "@/hooks/theme/useThemedColors";
 import { useThemeSizes } from "@/hooks/theme/useThemedSize";
+import { Pressable, PressableProps } from "react-native";
 
 type ButtonProps = {
-  title: string;
-  onPress: () => void;
+  title?: string;
+  icon?: React.ReactNode;
   /** Remove top border radius when merging with container above */
   mergeTop?: boolean;
   /** Remove bottom border radius when merging with container below */
@@ -18,20 +17,23 @@ type ButtonProps = {
   variant?: "primary" | "secondary" | "text";
 };
 
-export function Button(props: ButtonProps & ViewProps) {
-  const {
-    title,
-    onPress,
-    mergeTop,
-    mergeBottom,
-    mergeLeft,
-    mergeRight,
-    variant = "primary",
-  } = props;
+export function Button({
+  title,
+  icon,
+  mergeTop,
+  mergeBottom,
+  mergeLeft,
+  mergeRight,
+  variant = "primary",
+  ...props
+}: ButtonProps & PressableProps) {
   const colors = useThemeColors();
   const sizes = useThemeSizes();
+
   return (
-    <View
+    <Pressable
+      accessibilityRole="button"
+      {...props}
       style={[
         {
           backgroundColor:
@@ -57,21 +59,25 @@ export function Button(props: ButtonProps & ViewProps) {
         },
       ]}
     >
-      <Text
-        style={[
-          Fonts.button,
-          {
-            color:
-              variant === "primary"
-                ? colors.containerBackground
-                : variant === "secondary"
-                  ? colors.text
-                  : colors.text,
-          },
-        ]}
-      >
-        {title}
-      </Text>
-    </View>
+      {icon}
+
+      {title && (
+        <Text
+          variant="button"
+          style={[
+            {
+              color:
+                variant === "primary"
+                  ? colors.containerBackground
+                  : variant === "secondary"
+                    ? colors.text
+                    : colors.text,
+            },
+          ]}
+        >
+          {title}
+        </Text>
+      )}
+    </Pressable>
   );
 }

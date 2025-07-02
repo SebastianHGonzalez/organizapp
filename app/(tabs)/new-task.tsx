@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { Button, SafeAreaView, TextInput } from "react-native";
-import { Text, View } from "@/components/Themed";
+import { SafeAreaView } from "react-native";
+import { View } from "@/components/common/View";
+import { Text } from "@/components/common/Text";
+import { TextInput } from "@/components/common/TextInput";
+import { Button } from "@/components/common/Button";
 
 import { t } from "@/i18n/t";
 import { Task } from "@/model/Task";
@@ -44,11 +47,12 @@ export default function NewTask() {
 
   return (
     <SafeAreaView style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>
+      <Text variant="heading1" accessibilityRole="header">
         {t("newTask.title")}
       </Text>
+
       <View style={{ gap: 12 }}>
-        <Text>{t("newTask.name.label")}</Text>
+        <Text variant="label">{t("newTask.name.label")}</Text>
         <TextInput
           placeholder={t("newTask.name.placeholder")}
           value={name}
@@ -61,7 +65,7 @@ export default function NewTask() {
             marginBottom: 8,
           }}
         />
-        <Text>{t("newTask.description.label")}</Text>
+        <Text variant="label">{t("newTask.description.label")}</Text>
         <TextInput
           placeholder={t("newTask.description.placeholder")}
           value={description}
@@ -75,7 +79,7 @@ export default function NewTask() {
           }}
           multiline
         />
-        <Text>{t("newTask.startDate.label")}</Text>
+        <Text variant="label">{t("newTask.startDate.label")}</Text>
         <TextInput
           placeholder={t("newTask.startDate.placeholder")}
           value={startDate}
@@ -88,7 +92,7 @@ export default function NewTask() {
             marginBottom: 8,
           }}
         />
-        <Text>{t("newTask.endDate.label")}</Text>
+        <Text variant="label">{t("newTask.endDate.label")}</Text>
         <TextInput
           placeholder={t("newTask.endDate.placeholder")}
           value={endDate}
@@ -103,7 +107,7 @@ export default function NewTask() {
         />
 
         {/* Days of Week Picker */}
-        <Text>{t("newTask.daysOfWeek.label")}</Text>
+        <Text variant="label">{t("newTask.daysOfWeek.label")}</Text>
         <View
           style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 8 }}
         >
@@ -126,15 +130,12 @@ export default function NewTask() {
                       : [...prev, Number(day)],
                   );
                 }}
-                color={
-                  (daysOfWeek ?? []).includes(Number(day)) ? "#A259FF" : "#ccc"
-                }
               />
             </View>
           ))}
         </View>
 
-        <Text>{t("newTask.priority.label")}</Text>
+        <Text variant="label">{t("newTask.priority.label")}</Text>
 
         <Button
           title={t("newTask.create.label")}

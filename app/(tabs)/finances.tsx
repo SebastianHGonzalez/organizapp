@@ -1,9 +1,12 @@
-import { Text, View } from "@/components/Themed";
+import { Text } from "@/components/common/Text";
+import { View } from "@/components/common/View";
 
 export default function Finances() {
   return (
     <View>
-      <Text>Finances Screen</Text>
+      <Text variant="heading1" accessibilityRole="header">
+        Finances Screen
+      </Text>
     </View>
   );
 }

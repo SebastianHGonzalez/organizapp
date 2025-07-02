@@ -1,22 +1,35 @@
-import { Text, View } from "@/components/Themed";
 import { Container } from "@/components/common/Container";
-import Fonts from "@/constants/Fonts";
+import { Text } from "@/components/common/Text";
+import { View } from "@/components/common/View";
+import { TextInput } from "@/components/common/TextInput";
 import { Button } from "@/components/common/Button";
+import { useThemeColors } from "@/hooks/theme/useThemedColors";
+import { useThemeSizes } from "@/hooks/theme/useThemedSize";
+import { Code } from "../common/Code";
 
 export function DebugUI() {
+  const colors = useThemeColors();
+  const sizes = useThemeSizes();
+
   return (
     <View>
-      <Text>DebugUI</Text>
+      <Text variant="display">Display</Text>
+      <Text variant="hero">Hero</Text>
+      <Text variant="heading1">Heading 1</Text>
+      <Text variant="heading2">Heading 2</Text>
+      <Text variant="heading3">Heading 3</Text>
 
       <Container mergeBottom>
-        <Text style={[Fonts.heading]}>Test heading</Text>
-        <Text style={[Fonts.body]}>Test body</Text>
-        <Text style={[Fonts.caption]}>Test caption</Text>
-        <Text style={[Fonts.label]}>Test label</Text>
-        <Text style={[Fonts.input]}>Test input</Text>
+        <Text variant="heading1">Heading 1</Text>
+        <Text variant="body">Body</Text>
+        <Text variant="caption">Caption</Text>
+        <Text variant="label">Label</Text>
+        <TextInput placeholder="Input" />
+
+        <Code>Mono space</Code>
       </Container>
       <Container mergeTop>
-        <Text>Test container</Text>
+        <Text variant="heading1">Test container</Text>
         <Button title="Test Button" onPress={() => {}} />
         <Button title="Test Button" onPress={() => {}} variant="secondary" />
         <Button title="Test Button" onPress={() => {}} variant="text" />

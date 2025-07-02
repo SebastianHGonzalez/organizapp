@@ -1,9 +1,13 @@
-import { Text, View } from "@/components/Themed";
+import { View } from "@/components/common/View";
+import { Text } from "@/components/common/Text";
+import { DebugUI } from "@/components/debug/DebugUI";
 
 export default function Events() {
   return (
     <View>
-      <Text>Events Screen</Text>
+      <Text variant="heading1">Events Screen</Text>
+
+      <DebugUI />
     </View>
   );
 }

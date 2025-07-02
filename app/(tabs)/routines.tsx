@@ -1,7 +1,8 @@
-import { Text } from "@/components/Themed";
+import { Text } from "@/components/common/Text";
 import { useGetAllTasks } from "@/hooks/data/tasks/useGetAllTasks";
 import { FlashList } from "@shopify/flash-list";
 import { ScrollView } from "react-native-gesture-handler";
+import { DebugAllIcons } from "@/components/debug/DebugAllIcons";
 
 export default function Routines() {
   const { data, isLoading, isError, fetchNextPage } = useGetAllTasks({
@@ -11,11 +12,15 @@ export default function Routines() {
 
   return (
     <ScrollView>
-      <Text>Routines Screen222</Text>
+      <Text variant="heading1" accessibilityRole="header">
+        Routines Screen
+      </Text>
+
+      <DebugAllIcons />
 
       <FlashList
         data={tasks}
-        renderItem={({ item }) => <Text>{item.name}</Text>}
+        renderItem={({ item }) => <Text variant="body">{item.name}</Text>}
         keyExtractor={(item) => item.id}
         estimatedItemSize={200}
         onEndReached={() => {
