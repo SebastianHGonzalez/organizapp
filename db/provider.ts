@@ -1,7 +1,7 @@
 import { createContext, use } from "react";
 import * as SQLite from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
-import { schema, Table } from "./schema";
+import { schema } from "./schema";
 
 const databaseName = "organizapp.db";
 const expo = SQLite.openDatabaseSync(databaseName);

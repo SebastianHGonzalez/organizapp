@@ -46,4 +46,3 @@ export const schema = {
     tasks: tasksTable,
     taskLogs: taskLogsTable,
 } as const;
-export type Table = keyof typeof schema;
