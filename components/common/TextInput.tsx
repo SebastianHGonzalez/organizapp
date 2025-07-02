@@ -30,10 +30,12 @@ export function TextInput(props: TextInputProps) {
           backgroundColor: colors.inputBackground,
           borderColor: colors.border,
           borderWidth: 1,
-          borderTopLeftRadius: mergeTop || mergeLeft ? 0 : sizes.xs,
-          borderTopRightRadius: mergeTop || mergeRight ? 0 : sizes.xs,
-          borderBottomLeftRadius: mergeBottom || mergeLeft ? 0 : sizes.xs,
-          borderBottomRightRadius: mergeBottom || mergeRight ? 0 : sizes.xs,
+          borderTopLeftRadius: mergeTop || mergeLeft ? undefined : sizes.xs,
+          borderTopRightRadius: mergeTop || mergeRight ? undefined : sizes.xs,
+          borderBottomLeftRadius:
+            mergeBottom || mergeLeft ? undefined : sizes.xs,
+          borderBottomRightRadius:
+            mergeBottom || mergeRight ? undefined : sizes.xs,
           paddingVertical: sizes.xs,
           paddingHorizontal: sizes.sm,
         },

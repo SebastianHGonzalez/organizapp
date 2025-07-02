@@ -1,25 +1,23 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { View } from "react-native";
 
-import Colors from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/theme/useColorScheme";
 import { useClientOnlyValue } from "@/hooks/useClientOnlyValue";
 import { t } from "@/i18n/t";
 import RoutineIcon from "@/assets/svg/routine-icon.svg";
 import GoalIcon from "@/assets/svg/goal-icon.svg";
 import EventIcon from "@/assets/svg/event-icon.svg";
 import FinanceIcon from "@/assets/svg/finance-icon.svg";
-import PlusOutlineIcon from "@/assets/svg/plus-outline-icon.svg";
+import { useThemeColors } from "@/hooks/theme/useThemedColors";
+import { NewTaskButton } from "@/components/tasks/NewTaskButton";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+  const colors = useThemeColors();
   return (
     <Tabs
       initialRouteName="events"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: colors.tint,
+        tabBarInactiveTintColor: colors.tabIconDefault,
         headerShown: useClientOnlyValue(false, true),
       }}
     >
@@ -41,27 +39,7 @@ export default function TabLayout() {
         name="new-task"
         options={{
           tabBarLabel: "",
-          tabBarIcon: ({ focused, color }) => (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                aspectRatio: 1,
-                backgroundColor: "#A259FF",
-                marginBottom: 25,
-                borderRadius: 1000,
-                padding: 20,
-              }}
-            >
-              <PlusOutlineIcon
-                width={56}
-                height={56}
-                color="#fff"
-                strokeWidth={50}
-              />
-            </View>
-          ),
+          tabBarIcon: () => <NewTaskButton />,
         }}
       />
       <Tabs.Screen

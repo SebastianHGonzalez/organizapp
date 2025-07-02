@@ -12,7 +12,8 @@
     "testDebug": "jest -o --watch --coverage=false",
     "testFinal": "jest",
     "updateSnapshots": "jest -u --coverage=false",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "lint-fix": "expo lint --fix"
   },
   "jest": {
     "preset": "jest-expo",

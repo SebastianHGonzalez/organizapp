@@ -1,9 +1,10 @@
 import { Text } from "@/components/common/Text";
 import { useThemeColors } from "@/hooks/theme/useThemedColors";
 import { useThemeSizes } from "@/hooks/theme/useThemedSize";
-import { Pressable, PressableProps } from "react-native";
+import { useMemo } from "react";
+import { Pressable, PressableProps, StyleProp, ViewStyle } from "react-native";
 
-type ButtonProps = {
+type ButtonProps = Omit<PressableProps, "style"> & {
   title?: string;
   icon?: React.ReactNode;
   /** Remove top border radius when merging with container above */
@@ -15,6 +16,7 @@ type ButtonProps = {
   /** Remove right border radius when merging with container to the right */
   mergeRight?: boolean;
   variant?: "primary" | "secondary" | "text";
+  style?: StyleProp<ViewStyle>;
 };
 
 export function Button({
@@ -25,10 +27,21 @@ export function Button({
   mergeLeft,
   mergeRight,
   variant = "primary",
+  style,
   ...props
-}: ButtonProps & PressableProps) {
+}: ButtonProps) {
   const colors = useThemeColors();
   const sizes = useThemeSizes();
+  const textStyle = useMemo(() => {
+    return {
+      color:
+        variant === "primary"
+          ? colors.containerBackground
+          : variant === "secondary"
+            ? colors.text
+            : colors.text,
+    };
+  }, [variant, colors]);
 
   return (
     <Pressable
@@ -49,32 +62,36 @@ export function Button({
               : variant === "secondary"
                 ? colors.border
                 : "transparent",
-          borderTopLeftRadius: mergeTop || mergeLeft ? 0 : sizes.xs,
-          borderTopRightRadius: mergeTop || mergeRight ? 0 : sizes.xs,
-          borderBottomLeftRadius: mergeBottom || mergeLeft ? 0 : sizes.xs,
-          borderBottomRightRadius: mergeBottom || mergeRight ? 0 : sizes.xs,
+          borderTopLeftRadius: mergeTop || mergeLeft ? undefined : sizes.xs,
+          borderTopRightRadius: mergeTop || mergeRight ? undefined : sizes.xs,
+          borderBottomLeftRadius:
+            mergeBottom || mergeLeft ? undefined : sizes.xs,
+          borderBottomRightRadius:
+            mergeBottom || mergeRight ? undefined : sizes.xs,
           paddingVertical: sizes.xs,
           paddingHorizontal: sizes.sm,
-          elevation: variant === "text" ? 0 : 1,
+          elevation: variant === "text" ? 0 : 3,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: sizes.xs,
         },
+        style,
       ]}
     >
-      {icon}
+      {icon && (
+        <Text
+          accessibilityRole="image"
+          variant="button"
+          style={[textStyle, { lineHeight: 0 }]}
+        >
+          {icon}
+        </Text>
+      )}
 
       {title && (
-        <Text
-          variant="button"
-          style={[
-            {
-              color:
-                variant === "primary"
-                  ? colors.containerBackground
-                  : variant === "secondary"
-                    ? colors.text
-                    : colors.text,
-            },
-          ]}
-        >
+        <Text variant="button" style={textStyle}>
           {title}
         </Text>
       )}

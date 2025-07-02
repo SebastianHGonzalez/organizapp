@@ -6,6 +6,6 @@
     <path
         fill="none"
         stroke="currentColor"
-        d="M256 112v288M400 256H112"
+        d="M256 50v412 M50 256h412"
     />
 </svg>

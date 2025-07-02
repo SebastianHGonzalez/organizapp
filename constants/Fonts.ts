@@ -89,7 +89,6 @@ const Fonts = {
         fontWeight: "500",
         fontSize: FontSizes.xs,
         letterSpacing: 0.3,
-        textTransform: "uppercase",
     },
     button: {
         fontFamily: FontFamily.Poppins,

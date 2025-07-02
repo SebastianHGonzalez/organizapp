@@ -19,19 +19,19 @@ const roleMap: Record<keyof typeof Fonts, AccessibilityRole> = {
   monospace: "text",
   caption: "text",
   label: "text",
-  button: "button",
+  button: "text",
   input: "text",
   overline: "text",
   mono: "text",
 } as const;
 
 export function Text(props: TextProps) {
-  const { style, variant, ...otherProps } = props;
+  const { style, variant, accessibilityRole, ...otherProps } = props;
   const colors = useThemeColors();
 
   return (
     <DefaultText
-      accessibilityRole={roleMap[variant]}
+      accessibilityRole={accessibilityRole || roleMap[variant]}
       style={[
         {
           color: colors.text,
