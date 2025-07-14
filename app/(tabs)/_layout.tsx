@@ -14,7 +14,6 @@ export default function TabLayout() {
   const colors = useThemeColors();
   return (
     <Tabs
-      initialRouteName="events"
       screenOptions={{
         tabBarActiveTintColor: colors.tint,
         tabBarInactiveTintColor: colors.tabIconDefault,
@@ -22,7 +21,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="events"
+        name="index"
         options={{
           tabBarLabel: t("tabs.events.label"),
           tabBarIcon: ({ color }) => <EventIcon color={color} />,

@@ -70,5 +70,15 @@
     "create": {
       "label": "Create Task"
     }
+  },
+  "drawer": {
+    "title": "Create New",
+    "options": {
+      "event": "New Event",
+      "goal": "New Goal",
+      "routine": "New Routine",
+      "finance": "New Finance",
+      "note": "New Note"
+    }
   }
 }

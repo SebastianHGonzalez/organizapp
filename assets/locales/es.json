@@ -70,5 +70,15 @@
     "create": {
       "label": "Crear tarea"
     }
+  },
+  "drawer": {
+    "title": "Crear Nuevo",
+    "options": {
+      "event": "Nuevo Evento",
+      "goal": "Nueva Meta",
+      "routine": "Nueva Rutina",
+      "finance": "Nueva Finanza",
+      "note": "Nueva Nota"
+    }
   }
 }
