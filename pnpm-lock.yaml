@@ -111,9 +111,6 @@ importers:
       eslint-config-prettier:
         specifier: ^10.1.5
         version: 10.1.5(eslint@9.29.0)
-      eslint-plugin-drizzle:
-        specifier: ^0.2.3
-        version: 0.2.3(eslint@9.29.0)
       eslint-plugin-prettier:
         specifier: ^5.5.0
         version: 5.5.0(@types/eslint@9.6.1)(eslint-config-prettier@10.1.5(eslint@9.29.0))(eslint@9.29.0)(prettier@3.6.0)
@@ -2534,11 +2531,6 @@ packages:
         optional: true
       eslint-import-resolver-webpack:
         optional: true
-
-  eslint-plugin-drizzle@0.2.3:
-    resolution: {integrity: sha512-BO+ymHo33IUNoJlC0rbd7HP9EwwpW4VIp49R/tWQF/d2E1K2kgTf0tCXT0v9MSiBr6gGR1LtPwMLapTKEWSg9A==}
-    peerDependencies:
-      eslint: '>=8.0.0'
 
   eslint-plugin-expo@0.1.4:
     resolution: {integrity: sha512-YA7yiMacQbLJySuyJA0Eb5V65obqp6fVOWtw1JdYDRWC5MeToPrnNvhGDpk01Bv3Vm4ownuzUfvi89MXi1d6cg==}
@@ -8179,10 +8171,6 @@ snapshots:
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.29.0)
     transitivePeerDependencies:
       - supports-color
-
-  eslint-plugin-drizzle@0.2.3(eslint@9.29.0):
-    dependencies:
-      eslint: 9.29.0
 
   eslint-plugin-expo@0.1.4(eslint@9.29.0)(typescript@5.8.3):
     dependencies:

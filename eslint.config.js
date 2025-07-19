@@ -1,7 +1,6 @@
 const { defineConfig } = require("eslint/config");
 const expoConfig = require("eslint-config-expo/flat");
 const eslintPluginPrettierRecommended = require("eslint-plugin-prettier/recommended");
-const drizzlePlugin = require("eslint-plugin-drizzle");
 const typescriptPlugin = require("@typescript-eslint/eslint-plugin");
 
 module.exports = defineConfig([
@@ -23,11 +22,7 @@ module.exports = defineConfig([
       },
     },
     plugins: {
-      drizzle: drizzlePlugin,
       "@typescript-eslint": typescriptPlugin,
-    },
-    rules: {
-      ...drizzlePlugin.configs.recommended.rules,
     },
   },
 ]);
