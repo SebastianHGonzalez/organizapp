@@ -13,7 +13,9 @@
     "test-final": "jest",
     "update-snapshots": "jest -u --coverage=false",
     "lint": "expo lint",
-    "lint-fix": "expo lint --fix"
+    "lint-fix": "expo lint --fix",
+    "convex-dev": "convex dev",
+    "convex-dashboard": "convex dashboard"
   },
   "jest": {
     "preset": "jest-expo",
@@ -57,11 +59,12 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@babel/core": "^7.25.2",
+    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.0.10",
+    "convex": "^1.25.4",
     "babel-plugin-inline-import": "^3.0.0",
     "eslint": "^9.29.0",
     "eslint-config-expo": "~9.2.0",
