@@ -1,4 +1,4 @@
-import { Text as DefaultText, View as DefaultView } from "react-native";
+import { View as DefaultView } from "react-native";
 
 import { useThemeColors } from "@/hooks/theme/useThemedColors";
 import { useThemeSizes } from "@/hooks/theme/useThemedSize";

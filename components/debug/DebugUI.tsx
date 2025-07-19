@@ -16,7 +16,6 @@ import NoteIcon from "@/assets/svg/note-icon.svg";
 
 export function DebugUI() {
   const colors = useThemeColors();
-  const sizes = useThemeSizes();
 
   return (
     <View>

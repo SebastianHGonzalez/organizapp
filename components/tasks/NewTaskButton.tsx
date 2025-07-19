@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { StyleSheet } from "react-native";
 
 import PlusOutlineIcon from "@/assets/svg/plus-outline-icon.svg";
 import { Drawer } from "@/components/common/Drawer";
@@ -34,22 +35,9 @@ export function NewTaskButton() {
       <Button
         variant="primary"
         onPress={(e) => {
-          console.log("pressed");
           setDrawerVisible(true);
         }}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          aspectRatio: 1,
-
-          borderTopLeftRadius: 1000,
-          borderTopRightRadius: 1000,
-          borderBottomLeftRadius: 1000,
-          borderBottomRightRadius: 1000,
-          paddingVertical: 12,
-          paddingHorizontal: 12,
-        }}
+        style={styles.button}
         icon={<PlusOutlineIcon width={32} height={32} strokeWidth={50} />}
       />
 
@@ -61,3 +49,7 @@ export function NewTaskButton() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {},
+});

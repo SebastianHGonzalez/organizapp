@@ -77,6 +77,9 @@ const colors = {
 
 export default colors;
 
+export type Colors = typeof colors;
+export type ThemedColors = Colors[keyof Colors];
+
 type DarkColorScheme = keyof typeof colors.dark;
 type LightColorScheme = keyof typeof colors.light;
 let _darkKey = "text" as DarkColorScheme;

@@ -18,6 +18,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.tint,
         tabBarInactiveTintColor: colors.tabIconDefault,
         headerShown: useClientOnlyValue(false, true),
+        animation: "shift",
       }}
     >
       <Tabs.Screen
@@ -37,8 +38,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="new-task"
         options={{
-          tabBarLabel: "",
-          tabBarIcon: () => <NewTaskButton />,
+          title: t("tabs.new.label"),
+          tabBarLabel: t("tabs.new.label"),
+          tabBarButton: NewTaskButton,
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            console.log("tabPress");
+          },
         }}
       />
       <Tabs.Screen

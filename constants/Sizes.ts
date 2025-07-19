@@ -25,6 +25,9 @@ const sizes = {
 
 export default sizes;
 
+export type Sizes = typeof sizes;   
+export type ThemedSizes = Sizes[keyof Sizes];
+
 type CompactSizeScheme = keyof typeof sizes.compact;
 type ComfortableSizeScheme = keyof typeof sizes.comfortable;
 let _compactKey = "text" as CompactSizeScheme;

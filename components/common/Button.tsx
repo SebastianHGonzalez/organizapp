@@ -1,10 +1,13 @@
 import { Text } from "@/components/common/Text";
-import { useThemeColors } from "@/hooks/theme/useThemedColors";
-import { useThemeSizes } from "@/hooks/theme/useThemedSize";
-import { useMemo } from "react";
-import { Pressable, PressableProps, StyleProp, ViewStyle } from "react-native";
+import { useThemedStyles } from "@/hooks/theme/useThemedStyles";
+import {
+  StyleProp,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  ViewStyle,
+} from "react-native";
 
-type ButtonProps = Omit<PressableProps, "style"> & {
+type ButtonProps = Omit<TouchableOpacityProps, "style"> & {
   title?: string;
   icon?: React.ReactNode;
   /** Remove top border radius when merging with container above */
@@ -30,71 +33,65 @@ export function Button({
   style,
   ...props
 }: ButtonProps) {
-  const colors = useThemeColors();
-  const sizes = useThemeSizes();
-  const textStyle = useMemo(() => {
-    return {
+  const themedStyles = useThemedStyles(({ colors, sizes }) => ({
+    text: {
       color:
         variant === "primary"
           ? colors.containerBackground
           : variant === "secondary"
             ? colors.text
             : colors.text,
-    };
-  }, [variant, colors]);
+    },
+    button: {
+      backgroundColor:
+        variant === "primary"
+          ? colors.tint
+          : variant === "secondary"
+            ? colors.containerBackground
+            : "transparent",
+      borderWidth: 1,
+      borderColor:
+        variant === "primary"
+          ? colors.tintBorder
+          : variant === "secondary"
+            ? colors.border
+            : "transparent",
+      borderTopLeftRadius: mergeTop || mergeLeft ? undefined : sizes.xs,
+      borderTopRightRadius: mergeTop || mergeRight ? undefined : sizes.xs,
+      borderBottomLeftRadius: mergeBottom || mergeLeft ? undefined : sizes.xs,
+      borderBottomRightRadius: mergeBottom || mergeRight ? undefined : sizes.xs,
+      paddingVertical: sizes.xs,
+      paddingHorizontal: sizes.sm,
+      elevation: variant === "text" ? 0 : 3,
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: sizes.xs,
+    },
+  }));
 
   return (
-    <Pressable
+    <TouchableOpacity
       accessibilityRole="button"
       {...props}
-      style={[
-        {
-          backgroundColor:
-            variant === "primary"
-              ? colors.tint
-              : variant === "secondary"
-                ? colors.containerBackground
-                : "transparent",
-          borderWidth: 1,
-          borderColor:
-            variant === "primary"
-              ? colors.tintBorder
-              : variant === "secondary"
-                ? colors.border
-                : "transparent",
-          borderTopLeftRadius: mergeTop || mergeLeft ? undefined : sizes.xs,
-          borderTopRightRadius: mergeTop || mergeRight ? undefined : sizes.xs,
-          borderBottomLeftRadius:
-            mergeBottom || mergeLeft ? undefined : sizes.xs,
-          borderBottomRightRadius:
-            mergeBottom || mergeRight ? undefined : sizes.xs,
-          paddingVertical: sizes.xs,
-          paddingHorizontal: sizes.sm,
-          elevation: variant === "text" ? 0 : 3,
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: sizes.xs,
-        },
-        style,
-      ]}
+      style={[themedStyles.button, style]}
     >
       {icon && (
         <Text
           accessibilityRole="image"
           variant="button"
-          style={[textStyle, { lineHeight: 0 }]}
+          style={[themedStyles.text, { lineHeight: 0 }]}
         >
           {icon}
         </Text>
       )}
 
       {title && (
-        <Text variant="button" style={textStyle}>
+        <Text variant="button" style={themedStyles.text}>
           {title}
         </Text>
       )}
-    </Pressable>
+    </TouchableOpacity>
   );
 }
