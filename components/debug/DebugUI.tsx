@@ -4,7 +4,6 @@ import { View } from "@/components/common/View";
 import { TextInput } from "@/components/common/TextInput";
 import { Button } from "@/components/common/Button";
 import { useThemeColors } from "@/hooks/theme/useThemedColors";
-import { useThemeSizes } from "@/hooks/theme/useThemedSize";
 import { Code } from "../common/Code";
 import { ActionButton } from "../common/ActionButton";
 import EventIcon from "@/assets/svg/event-icon.svg";

@@ -1,14 +1,13 @@
 import { Text } from "@/components/common/Text";
-import { useGetAllTasks } from "@/hooks/data/tasks/useGetAllTasks";
 import { FlashList } from "@shopify/flash-list";
 import { DebugAllIcons } from "@/components/debug/DebugAllIcons";
 import { RootView } from "@/components/common/RootView";
 
 export default function Routines() {
-  const { data, isLoading, isError, fetchNextPage } = useGetAllTasks({
-    date: new Date(),
-  });
-  const tasks = data?.pages.flatMap((page) => page);
+  // const { data, isLoading, isError, fetchNextPage } = useGetAllTasks({
+  //   date: new Date(),
+  // });
+  const tasks = [];
 
   return (
     <RootView>
@@ -24,7 +23,7 @@ export default function Routines() {
         keyExtractor={(item) => item.id}
         estimatedItemSize={200}
         onEndReached={() => {
-          fetchNextPage();
+          // fetchNextPage();
         }}
       />
     </RootView>

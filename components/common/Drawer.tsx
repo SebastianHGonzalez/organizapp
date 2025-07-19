@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -13,7 +13,6 @@ import Animated, {
   withSpring,
   withTiming,
   runOnJS,
-  useAnimatedGestureHandler,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
@@ -89,7 +88,7 @@ export function Drawer({ visible, onClose, onOptionPress }: DrawerProps) {
   const expanded = useSharedValue(false);
 
   // Show/hide effect
-  React.useEffect(() => {
+  useEffect(() => {
     if (visible) {
       translateY.value = withSpring(SNAP_POINTS[0], { damping: 20 });
       overlayOpacity.value = withTiming(1, { duration: 200 });

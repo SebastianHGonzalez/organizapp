@@ -6,7 +6,6 @@ import { Button } from "@/components/common/Button";
 
 import { t } from "@/i18n/t";
 import { Task } from "@/model/Task";
-import { useCreateTask } from "@/hooks/data/tasks/useCreateTask";
 import { RootView } from "@/components/common/RootView";
 
 export default function NewTask() {
@@ -23,26 +22,24 @@ export default function NewTask() {
   const [monthsOfYear, setMonthsOfYear] = useState<Task["monthsOfYear"]>([]);
   const [tags, setTags] = useState<Task["tags"]>([]);
 
-  const createTaskMutation = useCreateTask();
-
   const handleCreateTask = async () => {
-    await createTaskMutation.mutateAsync({
-      id: crypto.randomUUID() as Task["id"],
-      name,
-      description,
-      startDate: startDate ? new Date(startDate) : undefined,
-      endDate: endDate ? new Date(endDate) : undefined,
-      priority,
-      taskType: "task",
-      status: "active",
-      daysOfWeek,
-      createdAt: new Date(),
-      timesOfDay,
-      daysOfMonth,
-      monthsOfYear,
-      tags,
-      updatedAt: new Date(),
-    });
+    // await createTaskMutation.mutateAsync({
+    //   id: crypto.randomUUID() as Task["id"],
+    //   name,
+    //   description,
+    //   startDate: startDate ? new Date(startDate) : undefined,
+    //   endDate: endDate ? new Date(endDate) : undefined,
+    //   priority,
+    //   taskType: "task",
+    //   status: "active",
+    //   daysOfWeek,
+    //   createdAt: new Date(),
+    //   timesOfDay,
+    //   daysOfMonth,
+    //   monthsOfYear,
+    //   tags,
+    //   updatedAt: new Date(),
+    // });
   };
 
   return (
