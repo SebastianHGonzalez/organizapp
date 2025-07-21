@@ -43,3 +43,6 @@ web-build/
 
 # svg types
 svg-types.d.ts
+
+# jest
+coverage

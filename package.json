@@ -15,21 +15,6 @@
     "lint": "expo lint",
     "lint-fix": "expo lint --fix"
   },
-  "jest": {
-    "preset": "jest-expo",
-    "transformIgnorePatterns": [
-      "node_modules/(?!(?:.pnpm/)?((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg))"
-    ],
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "**/*.{ts,tsx,js,jsx}",
-      "!**/coverage/**",
-      "!**/node_modules/**",
-      "!**/babel.config.js",
-      "!**/expo-env.d.ts",
-      "!**/.expo/**"
-    ]
-  },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
     "@react-native-async-storage/async-storage": "2.1.2",
@@ -74,6 +59,8 @@
     "prettier": "^3.6.0",
     "react-native-svg-transformer": "^1.5.1",
     "react-test-renderer": "19.0.0",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
     "typescript": "~5.8.3"
   },
   "private": true
