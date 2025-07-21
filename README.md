@@ -17,9 +17,3 @@ Run development environment
 ```
 pnpm start
 ```
-
-Run Convex watcher
-
-```
-pnpm convex-dev
-```

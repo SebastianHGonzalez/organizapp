@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Result } from "./Store";
 
 export const taskSchema = z.object({
   id: z.string().uuid(),
@@ -46,3 +47,13 @@ export const deleteTaskSchema = z.object({
   id: z.string().uuid(),
 });
 export type DeleteTask = z.infer<typeof deleteTaskSchema>;
+
+type ValidationError = { type: "ValidationError" };
+type NotFoundError = { type: "NotFoundError" };
+
+export interface TasksStore {
+  tasks: Task[];
+  create(task: CreateTask): Result<Task, ValidationError>;
+  update(task: UpdateTask): Result<Task, NotFoundError>;
+  delete(task: DeleteTask): Result<void, NotFoundError>;
+}

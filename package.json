@@ -13,9 +13,7 @@
     "test-final": "jest",
     "update-snapshots": "jest -u --coverage=false",
     "lint": "expo lint",
-    "lint-fix": "expo lint --fix",
-    "convex-dev": "convex dev",
-    "convex-dashboard": "convex dashboard"
+    "lint-fix": "expo lint --fix"
   },
   "jest": {
     "preset": "jest-expo",
@@ -34,6 +32,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
+    "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/native": "^7.1.6",
     "@shopify/flash-list": "1.7.6",
     "expo": "~53.0.12",
@@ -56,7 +55,8 @@
     "react-native-screens": "~4.11.1",
     "react-native-svg": "15.11.2",
     "react-native-web": "~0.20.0",
-    "zod": "^3.25.67"
+    "zod": "^3.25.67",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -64,7 +64,6 @@
     "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.0.10",
-    "convex": "^1.25.4",
     "babel-plugin-inline-import": "^3.0.0",
     "eslint": "^9.29.0",
     "eslint-config-expo": "~9.2.0",

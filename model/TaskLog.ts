@@ -1,4 +1,5 @@
 import z from "zod";
+import { Result } from "./Store";
 
 export const taskLogSchema = z.object({
   id: z.string().uuid(),
@@ -28,3 +29,13 @@ export const deleteTaskLogSchema = z.object({
   id: z.string().uuid(),
 });
 export type DeleteTaskLog = z.infer<typeof deleteTaskLogSchema>;
+
+type ValidationError = { type: "ValidationError" };
+type NotFoundError = { type: "NotFoundError" };
+
+export interface TaskLogsStore {
+  taskLogs: TaskLog[];
+  create(taskLog: CreateTaskLog): Result<TaskLog, ValidationError>;
+  update(taskLog: UpdateTaskLog): Result<TaskLog, NotFoundError>;
+  delete(taskLog: DeleteTaskLog): Result<void, NotFoundError>;
+}
