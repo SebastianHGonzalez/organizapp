@@ -1,297 +1,180 @@
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
   Dimensions,
-  TouchableOpacity,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
-  runOnJS,
-} from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useThemeColors } from "@/hooks/theme/useThemedColors";
 import { useThemeSizes } from "@/hooks/theme/useThemedSize";
-import { t } from "@/i18n/t";
-import EventIcon from "@/assets/svg/event-icon.svg";
-import GoalIcon from "@/assets/svg/goal-icon.svg";
-import RoutineIcon from "@/assets/svg/routine-icon.svg";
-import FinanceIcon from "@/assets/svg/finance-icon.svg";
-import NoteIcon from "@/assets/svg/note-icon.svg";
-import CrossIcon from "@/assets/svg/cross-icon.svg";
-
-const { height: screenHeight } = Dimensions.get("window");
-const MIN_HEIGHT = screenHeight * 0.4;
-const MAX_HEIGHT = screenHeight * 0.95;
-const SNAP_POINTS = [MIN_HEIGHT, MAX_HEIGHT];
 
 interface DrawerProps {
-  visible: boolean;
+  isOpen: boolean;
+  children: ReactNode;
   onClose: () => void;
-  onOptionPress: (option: string) => void;
 }
 
-interface DrawerOption {
-  id: string;
-  label: string;
-  icon: React.ComponentType<{ color: string; width?: number; height?: number }>;
-  color: string;
-}
-
-const drawerOptions: DrawerOption[] = [
-  {
-    id: "event",
-    label: t("drawer.options.event"),
-    icon: EventIcon,
-    color: "#FF6B6B",
-  },
-  {
-    id: "goal",
-    label: t("drawer.options.goal"),
-    icon: GoalIcon,
-    color: "#4ECDC4",
-  },
-  {
-    id: "routine",
-    label: t("drawer.options.routine"),
-    icon: RoutineIcon,
-    color: "#45B7D1",
-  },
-  {
-    id: "finance",
-    label: t("drawer.options.finance"),
-    icon: FinanceIcon,
-    color: "#96CEB4",
-  },
-  {
-    id: "note",
-    label: t("drawer.options.note"),
-    icon: NoteIcon,
-    color: "#FFEAA7",
-  },
-];
-
-export function Drawer({ visible, onClose, onOptionPress }: DrawerProps) {
+export function Drawer({ isOpen, onClose, children }: DrawerProps) {
+  const insets = useSafeAreaInsets();
   const colors = useThemeColors();
   const sizes = useThemeSizes();
-  const insets = useSafeAreaInsets();
 
-  // Animation values
-  const translateY = useSharedValue(screenHeight);
-  const overlayOpacity = useSharedValue(0);
-  const expanded = useSharedValue(false);
+  const screenHeight = Dimensions.get("window").height;
+  const drawerHeight = screenHeight * 0.6; // Drawer covers 60% of screen
 
-  // Show/hide effect
+  // Animated value for translateY
+  const translateY = useSharedValue(drawerHeight);
+
+  // Internal state to keep the drawer mounted during close animation
+  const [isMounted, setIsMounted] = useState(isOpen);
+
+  // Animate drawer in/out when visible changes
   useEffect(() => {
-    if (visible) {
-      translateY.value = withSpring(SNAP_POINTS[0], { damping: 20 });
-      overlayOpacity.value = withTiming(1, { duration: 200 });
-      expanded.value = false;
-    } else {
-      translateY.value = withTiming(screenHeight, { duration: 250 });
-      overlayOpacity.value = withTiming(0, { duration: 200 });
+    if (isOpen) {
+      setIsMounted(true);
+      // Use withTiming for a fast, non-bouncy open animation
+      translateY.value = withTiming(0, { duration: 120 });
+    } else if (isMounted) {
+      // Animate out, then unmount after animation
+      translateY.value = withTiming(
+        drawerHeight,
+        { duration: 250 },
+        (finished) => {
+          if (finished) runOnJS(setIsMounted)(false);
+        },
+      );
     }
-  }, [visible]);
+  }, [isOpen, drawerHeight, translateY]);
 
-  // Animated styles
-  const animatedDrawerStyle = useAnimatedStyle(() => ({
+  // Animated style for the drawer
+  const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
   }));
-  const animatedOverlayStyle = useAnimatedStyle(() => ({
-    opacity: overlayOpacity.value,
-    pointerEvents: overlayOpacity.value > 0.1 ? "auto" : "none",
-  }));
 
-  // Gesture handler
+  // Animated style for the overlay opacity
+  const animatedOverlayStyle = useAnimatedStyle(() => {
+    const progress =
+      1 - Math.min(Math.max(translateY.value / drawerHeight, 0), 1);
+    return { opacity: progress * 0.3 };
+  });
+
+  // Pan gesture for dragging down to close
   const panGesture = Gesture.Pan()
-    .onStart((event, ctx) => {
-      ctx.startY = translateY.value;
-    })
-    .onUpdate((event, ctx) => {
-      const newY = ctx.startY + event.translationY;
-      if (!expanded.value) {
-        translateY.value = Math.max(
-          SNAP_POINTS[0],
-          Math.min(newY, screenHeight),
-        );
-      } else {
-        translateY.value = Math.max(
-          SNAP_POINTS[1],
-          Math.min(newY, screenHeight),
-        );
+    .onUpdate((e) => {
+      if (e.translationY > 0) {
+        translateY.value = e.translationY;
       }
     })
-    .onEnd((event, ctx) => {
-      const { translationY, velocityY } = event;
-      let toValue = SNAP_POINTS[0];
-      if (!expanded.value) {
-        if (translationY > 80 || velocityY > 800) {
-          // Close
-          toValue = screenHeight;
-          overlayOpacity.value = withTiming(0, { duration: 200 });
-          translateY.value = withTiming(
-            screenHeight,
-            { duration: 250 },
-            (finished) => {
-              if (finished) runOnJS(onClose)();
-            },
-          );
-          return;
-        } else if (translationY < -80 || velocityY < -800) {
-          // Expand
-          toValue = SNAP_POINTS[1];
-          expanded.value = true;
-        }
+    .onEnd((e) => {
+      if (e.translationY > drawerHeight * 0.25 || e.velocityY > 800) {
+        // If dragged down enough or with enough velocity, close
+        translateY.value = withTiming(
+          drawerHeight,
+          { duration: 200 },
+          (finished) => {
+            if (finished) runOnJS(onClose)();
+          },
+        );
       } else {
-        if (translationY > 80 || velocityY > 800) {
-          // Collapse
-          toValue = SNAP_POINTS[0];
-          expanded.value = false;
-        }
+        // Otherwise, snap back up (non-bouncy)
+        translateY.value = withTiming(0, { duration: 120 });
       }
-      translateY.value = withSpring(toValue, { damping: 20 });
     });
 
-  if (!visible) return null;
+  // Handle overlay press: animate out, then call onClose
+  const handleOverlayPress = () => {
+    translateY.value = withTiming(
+      drawerHeight,
+      { duration: 200 },
+      (finished) => {
+        if (finished) runOnJS(onClose)();
+      },
+    );
+  };
+
+  if (!isMounted) return null;
 
   return (
-    <GestureDetector gesture={panGesture}>
-      <Animated.View style={StyleSheet.absoluteFill}>
+    <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+      {/* Overlay */}
+      <TouchableWithoutFeedback onPress={handleOverlayPress}>
         <Animated.View
-          style={[styles.overlay, animatedOverlayStyle]}
-          onTouchEnd={onClose}
+          style={[
+            styles.overlay,
+            { backgroundColor: colors.overlayBackground },
+            animatedOverlayStyle,
+          ]}
+          pointerEvents="auto"
         />
+      </TouchableWithoutFeedback>
+
+      {/* Drawer */}
+      <GestureDetector gesture={panGesture}>
         <Animated.View
           style={[
             styles.drawer,
+            animatedStyle,
             {
+              height: drawerHeight,
               backgroundColor: colors.containerBackground,
-              paddingBottom: insets.bottom + sizes.md,
-              minHeight: MIN_HEIGHT,
-              maxHeight: MAX_HEIGHT,
+              borderTopLeftRadius: sizes.md * 2,
+              borderTopRightRadius: sizes.md * 2,
+              paddingBottom: insets.bottom + sizes.md * 2,
+              elevation: 7,
             },
-            animatedDrawerStyle,
           ]}
         >
-          <View style={styles.handleContainer}>
-            <View style={[styles.handle, { backgroundColor: colors.border }]} />
-          </View>
-          <View style={styles.header}>
-            <Text
-              style={[
-                styles.title,
-                {
-                  color: colors.text,
-                  fontSize: sizes.lg,
-                  fontWeight: "600",
-                },
-              ]}
-            >
-              {t("drawer.title")}
-            </Text>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <CrossIcon color={colors.text} width={24} height={24} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.optionsGrid}>
-            {drawerOptions.map((option) => (
-              <TouchableOpacity
-                key={option.id}
-                style={styles.optionItem}
-                onPress={() => {
-                  onOptionPress(option.id);
-                  onClose();
-                }}
-              >
-                <View
-                  style={[
-                    styles.iconContainer,
-                    { backgroundColor: option.color },
-                  ]}
-                >
-                  <option.icon color="#fff" width={32} height={32} />
-                </View>
-                <Text
-                  style={[
-                    styles.optionLabel,
-                    {
-                      color: colors.text,
-                      fontSize: sizes.sm,
-                      marginTop: sizes.xs,
-                    },
-                  ]}
-                >
-                  {option.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+          <DragHandle />
+          {children}
         </Animated.View>
-      </Animated.View>
-    </GestureDetector>
+      </GestureDetector>
+    </View>
+  );
+}
+
+function DragHandle() {
+  const colors = useThemeColors();
+
+  return (
+    <View style={styles.handleContainer}>
+      <View style={[styles.handle, { backgroundColor: colors.zinc }]} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "flex-end",
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 1,
   },
   drawer: {
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    minHeight: screenHeight * 0.4,
-    maxHeight: screenHeight * 0.7,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2,
+    paddingTop: 12,
+    paddingHorizontal: 20,
+    // height is set dynamically
   },
   handleContainer: {
     alignItems: "center",
-    paddingVertical: 12,
+    marginBottom: 12,
   },
   handle: {
-    width: 40,
-    height: 4,
-    borderRadius: 2,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-  },
-  title: {
-    fontWeight: "600",
-  },
-  closeButton: {
-    padding: 4,
-  },
-  optionsGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    paddingHorizontal: 20,
-    gap: 20,
-  },
-  optionItem: {
-    alignItems: "center",
-    width: "30%",
-    minWidth: 100,
-  },
-  iconContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  optionLabel: {
-    textAlign: "center",
-    fontWeight: "500",
+    width: 100,
+    height: 5,
+    borderRadius: 3,
+    marginBottom: 4,
+    opacity: 0.3,
   },
 });

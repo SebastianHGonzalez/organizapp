@@ -1,6 +1,7 @@
-import { useThemeColors } from "@/hooks/theme/useThemedColors";
 import { ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { useThemeColors } from "@/hooks/theme/useThemedColors";
 
 type RootViewProps = ScrollView["props"];
 

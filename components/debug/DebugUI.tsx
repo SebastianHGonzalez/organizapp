@@ -5,18 +5,15 @@ import FinanceIcon from "@/assets/svg/finance-icon.svg";
 import GoalIcon from "@/assets/svg/goal-icon.svg";
 import NoteIcon from "@/assets/svg/note-icon.svg";
 import RoutineIcon from "@/assets/svg/routine-icon.svg";
+import { ActionButton } from "@/components/common/ActionButton";
 import { Button } from "@/components/common/Button";
+import { Code } from "@/components/common/Code";
 import { Container } from "@/components/common/Container";
 import { Text } from "@/components/common/Text";
 import { TextInput } from "@/components/common/TextInput";
 import { View } from "@/components/common/View";
-import { useThemeColors } from "@/hooks/theme/useThemedColors";
-import { ActionButton } from "../common/ActionButton";
-import { Code } from "../common/Code";
 
 export function DebugUI() {
-  const colors = useThemeColors();
-
   return (
     <View>
       <Text variant="display">Display</Text>

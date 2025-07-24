@@ -30,11 +30,7 @@ export function ActionButton(props: ActionButtonProps) {
     <Pressable
       accessibilityRole="button"
       {...props}
-      style={StyleSheet.flatten([
-        styles.wrapper,
-        themedStyles.wrapper,
-        props.style,
-      ])}
+      style={[styles.wrapper, themedStyles.wrapper, props.style]}
     >
       <View style={buttonThemedStyles.button}>
         <Text

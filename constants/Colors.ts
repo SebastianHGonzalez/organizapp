@@ -118,6 +118,7 @@ const colors = {
     background: Palette.zinc["50"],
     containerBackground: Palette.zinc["100"],
     inputBackground: Palette.zinc["200"],
+    overlayBackground: Palette.zinc["950"],
     border: Palette.zinc["200"],
 
     lavenderMagenta: Palette["lavenderMagenta"]["400"],
@@ -195,6 +196,7 @@ const colors = {
     background: Palette.zinc["950"],
     containerBackground: Palette.zinc["900"],
     inputBackground: Palette.zinc["800"],
+    overlayBackground: Palette.zinc["50"],
     border: Palette.zinc["800"],
 
     lavenderMagenta: Palette["lavenderMagenta"]["300"],

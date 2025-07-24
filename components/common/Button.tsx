@@ -33,7 +33,7 @@ export function Button(props: ButtonProps) {
     <TouchableOpacity
       accessibilityRole="button"
       {...props}
-      style={StyleSheet.flatten([themedStyles.button, props.style])}
+      style={[themedStyles.button, props.style]}
     >
       {props.icon && (
         <Text
