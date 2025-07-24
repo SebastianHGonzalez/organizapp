@@ -38,8 +38,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="new-task"
         options={{
-          title: t("tabs.new.label"),
-          tabBarLabel: t("tabs.new.label"),
+          title: t("tabs.newTask.label"),
+          tabBarLabel: t("tabs.newTask.label"),
           tabBarButton: NewTaskButton,
         }}
         listeners={{

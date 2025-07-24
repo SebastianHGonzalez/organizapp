@@ -1,7 +1,12 @@
-import { AccessibilityRole, Text as DefaultText } from "react-native";
+import {
+  AccessibilityRole,
+  Text as DefaultText,
+  StyleSheet,
+} from "react-native";
 
 import Fonts from "@/constants/Fonts";
 import { useThemeColors } from "@/hooks/theme/useThemedColors";
+import { useThemedStyles } from "@/hooks/theme/useThemedStyles";
 
 export type TextProps = DefaultText["props"] & {
   variant: keyof typeof Fonts;
@@ -27,18 +32,20 @@ const roleMap: Record<keyof typeof Fonts, AccessibilityRole> = {
 
 export function Text(props: TextProps) {
   const { style, variant, accessibilityRole, ...otherProps } = props;
-  const colors = useThemeColors();
+  const themedStyle = useThemedStyles(
+    ({ colors }) => ({
+      text: {
+        ...Fonts[variant],
+        color: colors.text,
+      },
+    }),
+    [variant],
+  );
 
   return (
     <DefaultText
       accessibilityRole={accessibilityRole || roleMap[variant]}
-      style={[
-        {
-          color: colors.text,
-        },
-        Fonts[variant],
-        style,
-      ]}
+      style={[themedStyle.text, style]}
       {...otherProps}
     />
   );

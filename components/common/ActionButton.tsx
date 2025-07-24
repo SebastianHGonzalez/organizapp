@@ -1,71 +1,64 @@
-import { useThemeColors } from "@/hooks/theme/useThemedColors";
-import { useThemeSizes } from "@/hooks/theme/useThemedSize";
 import {
   Pressable,
   PressableProps,
   StyleProp,
   StyleSheet,
   ViewStyle,
-  Text as DefaultText,
 } from "react-native";
-import { View } from "./View";
+
+import { Color } from "@/constants/Colors";
+import { useThemedStyles } from "@/hooks/theme/useThemedStyles";
+import { useButtonThemedStyles } from "./Button";
 import { Text } from "./Text";
+import { View } from "./View";
 
 type ActionButtonProps = Omit<PressableProps, "style"> & {
   label?: string;
   children?: React.ReactNode;
 
-  color?: string;
-  backgroundColor?: string;
-  borderColor?: string;
-  labelColor?: string;
+  color?: Color;
+  labelColor?: Color;
 
   style?: StyleProp<ViewStyle>;
 };
 
-export function ActionButton({
-  label,
-  children,
-  style,
-  color,
-  backgroundColor,
-  borderColor,
-  labelColor,
-  ...props
-}: ActionButtonProps) {
-  const colors = useThemeColors();
-  const sizes = useThemeSizes();
+export function ActionButton(props: ActionButtonProps) {
+  const themedStyles = useActioButtonThemedStyles(props);
+  const buttonThemedStyles = useButtonThemedStyles({ color: props.color });
 
   return (
     <Pressable
       accessibilityRole="button"
       {...props}
-      style={[
+      style={StyleSheet.flatten([
         styles.wrapper,
-        {
-          gap: sizes.xs,
-        },
-        style,
-      ]}
+        themedStyles.wrapper,
+        props.style,
+      ])}
     >
-      <View
-        style={StyleSheet.flatten([
-          {
-            backgroundColor: backgroundColor || colors.tint,
-            padding: sizes.xs,
-            borderRadius: sizes.xs,
-            borderWidth: 1,
-            borderColor: borderColor || colors.tintBorder,
-          },
-        ])}
-      >
-        <DefaultText style={{ color: color || colors.text }}>
-          {children}
-        </DefaultText>
+      <View style={buttonThemedStyles.button}>
+        <Text
+          accessibilityRole="image"
+          variant="button"
+          style={buttonThemedStyles.icon}
+        >
+          {props.children}
+        </Text>
       </View>
-      {label && <Text variant="label">{label}</Text>}
+
+      {props.label && <Text variant="label">{props.label}</Text>}
     </Pressable>
   );
+}
+
+function useActioButtonThemedStyles(props: ActionButtonProps) {
+  return useThemedStyles(({ colors, sizes }) => {
+    return {
+      wrapper: {
+        gap: sizes.xs,
+      },
+    };
+  });
 }
 
 const styles = StyleSheet.create({
