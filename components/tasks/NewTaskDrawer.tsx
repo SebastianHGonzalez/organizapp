@@ -1,15 +1,24 @@
-import { FlashList } from "@shopify/flash-list";
+import { FlashList, ListRenderItemInfo } from "@shopify/flash-list";
+import { Link } from "expo-router";
+import { ReactNode } from "react";
 import { create, StateCreator } from "zustand";
 import { devtools } from "zustand/middleware";
 
 import EventIcon from "@/assets/svg/event-icon.svg";
 import FinanceIcon from "@/assets/svg/finance-icon.svg";
 import GoalIcon from "@/assets/svg/goal-icon.svg";
-import NoteIcon from "@/assets/svg/note-icon.svg";
+import IdeaIcon from "@/assets/svg/idea-icon.svg";
+import LinkIcon from "@/assets/svg/link-icon.svg";
+import PuzzleIcon from "@/assets/svg/puzzle-icon.svg";
 import RoutineIcon from "@/assets/svg/routine-icon.svg";
 import { ActionButton } from "@/components/common/ActionButton";
 import { Drawer } from "@/components/common/Drawer";
 import { Text } from "@/components/common/Text";
+import { View } from "@/components/common/View";
+import { Color } from "@/constants/Colors";
+import { useThemedStyles } from "@/hooks/theme/useThemedStyles";
+import { t } from "@/i18n/t";
+import { TaskLogType, TaskType } from "@/model/Task";
 
 interface NewTaskDrawerStore {
   isOpen: boolean;
@@ -17,10 +26,7 @@ interface NewTaskDrawerStore {
   close: () => void;
 }
 
-const newTaskDrawerStoreCreator: StateCreator<NewTaskDrawerStore> = (
-  set,
-  get,
-) => ({
+const newTaskDrawerStoreCreator: StateCreator<NewTaskDrawerStore> = (set) => ({
   isOpen: false,
   open() {
     set({ isOpen: true });
@@ -35,60 +41,133 @@ export const useNewTaskDrawer = create<NewTaskDrawerStore>()(
 );
 
 export function NewTaskDrawer() {
+  const themedStyle = useNewTaskDrawerThemedStyles();
   const { isOpen, close } = useNewTaskDrawer();
 
   return (
-    <Drawer onClose={close} isOpen={isOpen}>
-      <Text variant="body">NewTaskDrawer</Text>
+    <Drawer onClose={close} isOpen={true}>
+      <Text variant="heading3" style={themedStyle.heading}>
+        {t("newTaskDrawer.header")}
+      </Text>
 
       <FlashList
         data={
           [
             {
-              label: "Event",
+              label: t("newTaskDrawer.event.label"),
               color: "lavenderMagentaLight",
-              icon: <EventIcon width={24} height={24} />,
+              icon: <EventIcon width="100%" height="100%" />,
+              taskType: "event",
             },
             {
-              label: "Goal",
+              label: t("newTaskDrawer.routine.label"),
               color: "bittersweetLight",
-              icon: <GoalIcon width={24} height={24} />,
+              icon: <RoutineIcon width="100%" height="100%" />,
+              taskType: "routine",
             },
             {
-              label: "Routine",
+              label: t("newTaskDrawer.goal.label"),
               color: "seagullLight",
-              icon: <RoutineIcon width={24} height={24} />,
+              icon: <GoalIcon width="100%" height="100%" />,
+              taskType: "goal",
             },
             {
-              label: "Expense",
+              label: t("newTaskDrawer.project.label"),
               color: "malachiteLight",
-              icon: <FinanceIcon width={24} height={24} />,
+              icon: <PuzzleIcon width="100%" height="100%" />,
+              taskType: "project",
             },
             {
-              label: "Income",
+              label: t("newTaskDrawer.idea.label"),
               color: "ripeLemonLight",
-              icon: <FinanceIcon width={24} height={24} />,
+              icon: <IdeaIcon width="100%" height="100%" />,
+              taskType: "task", // TODO: fix new idea
             },
             {
-              label: "Note",
+              label: t("newTaskDrawer.expense.label"),
               color: "zincLight",
-              icon: <NoteIcon width={24} height={24} />,
+              icon: <FinanceIcon width="100%" height="100%" />,
+              taskLogType: "expense",
+            },
+            {
+              label: t("newTaskDrawer.income.label"),
+              color: "zincLight",
+              icon: <FinanceIcon width="100%" height="100%" />,
+              taskLogType: "income",
+            },
+            {
+              label: t("newTaskDrawer.link.label"),
+              color: "pictonBlueLight",
+              icon: <LinkIcon width="100%" height="100%" />,
+              taskType: "task", // TODO: fix new link
             },
           ] as const
         }
         numColumns={5}
-        renderItem={({ item }) => (
-          <ActionButton
-            key={item.label}
-            label={item.label}
-            onPress={() => {}}
-            color={item.color}
-            style={{ margin: 15 }}
-          >
-            {item.icon}
-          </ActionButton>
-        )}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
       />
     </Drawer>
   );
+}
+
+function keyExtractor(item: NewTaskDrawerButtonProps) {
+  return item.label;
+}
+
+function renderItem({ item }: ListRenderItemInfo<NewTaskDrawerButtonProps>) {
+  return <NewTaskDrawerButton {...item} />;
+}
+
+interface NewTaskDrawerButtonProps {
+  label: string;
+  color: Color;
+  icon: ReactNode;
+  taskType?: TaskType;
+  taskLogType?: TaskLogType;
+}
+
+function NewTaskDrawerButton({
+  color,
+  icon,
+  label,
+  taskType,
+  taskLogType,
+}: NewTaskDrawerButtonProps) {
+  const themedStyles = useNewTaskDrawerThemedStyles();
+  const pathname = taskLogType ? "/(tabs)/new-task-log" : "/(tabs)/new-task";
+
+  return (
+      <Link
+        asChild
+        href={{
+          pathname,
+          params: { taskType, taskLogType },
+        }}
+      >
+        <ActionButton
+          label={label}
+          color={color}
+          buttonStyle={themedStyles.button}
+          style={themedStyles.listItem}
+        >
+          {icon}
+        </ActionButton>
+      </Link>
+  );
+}
+
+function useNewTaskDrawerThemedStyles() {
+  return useThemedStyles(({ sizes }) => ({
+    heading: {
+      marginBlockStart: sizes.xs,
+      marginBlockEnd: sizes.lg,
+    },
+    listItem: {
+      marginBlockEnd: sizes.xl,
+    },
+    button: {
+      marginInline: sizes.xs * -1,
+    },
+  }));
 }

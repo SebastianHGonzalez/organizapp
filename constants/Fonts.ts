@@ -52,7 +52,6 @@ const Fonts = {
         fontWeight: "bold",
         fontSize: FontSizes.md,
         letterSpacing: 0.8,
-        textTransform: "uppercase",
     },
     subtitle: {
         fontFamily: FontFamily.Poppins,

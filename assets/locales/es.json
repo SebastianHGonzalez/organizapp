@@ -80,5 +80,16 @@
       "finance": "Nueva Finanza",
       "note": "Nueva Nota"
     }
+  },
+  "newTaskDrawer": {
+    "header": "Nuevo",
+    "event": { "label": "Evento" },
+    "routine": { "label": "Rutina" },
+    "goal": { "label": "Meta" },
+    "project": { "label": "Proyecto" },
+    "idea": { "label": "Idea" },
+    "expense": { "label": "Gasto" },
+    "income": { "label": "Ingreso" },
+    "link": { "label": "Enlace" }
   }
 }

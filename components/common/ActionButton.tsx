@@ -20,6 +20,7 @@ type ActionButtonProps = Omit<PressableProps, "style"> & {
   labelColor?: Color;
 
   style?: StyleProp<ViewStyle>;
+  buttonStyle?: StyleProp<ViewStyle>;
 };
 
 export function ActionButton(props: ActionButtonProps) {
@@ -32,7 +33,9 @@ export function ActionButton(props: ActionButtonProps) {
       {...props}
       style={[styles.wrapper, themedStyles.wrapper, props.style]}
     >
-      <View style={buttonThemedStyles.button}>
+      <View
+        style={[buttonThemedStyles.button, styles.button, props.buttonStyle]}
+      >
         <Text
           accessibilityRole="image"
           variant="button"
@@ -58,6 +61,7 @@ function useActioButtonThemedStyles(props: ActionButtonProps) {
 }
 
 const styles = StyleSheet.create({
+  button: { width: "100%", aspectRatio: 1 },
   wrapper: {
     display: "flex",
     flexDirection: "column",

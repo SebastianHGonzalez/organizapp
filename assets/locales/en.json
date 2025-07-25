@@ -80,5 +80,16 @@
       "finance": "New Finance",
       "note": "New Note"
     }
+  },
+  "newTaskDrawer": {
+    "header": "New",
+    "event": { "label": "Event" },
+    "routine": { "label": "Routine" },
+    "goal": { "label": "Goal" },
+    "project": { "label": "Project" },
+    "idea": { "label": "Idea" },
+    "expense": { "label": "Expense" },
+    "income": { "label": "Income" },
+    "link": { "label": "Link" }
   }
 }

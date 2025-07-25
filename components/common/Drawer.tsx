@@ -29,7 +29,7 @@ export function Drawer({ isOpen, onClose, children }: DrawerProps) {
   const sizes = useThemeSizes();
 
   const screenHeight = Dimensions.get("window").height;
-  const drawerHeight = screenHeight * 0.6; // Drawer covers 60% of screen
+  const drawerHeight = screenHeight * 0.5; // Drawer covers 50% of screen
 
   // Animated value for translateY
   const translateY = useSharedValue(drawerHeight);

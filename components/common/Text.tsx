@@ -1,11 +1,6 @@
-import {
-  AccessibilityRole,
-  Text as DefaultText,
-  StyleSheet,
-} from "react-native";
+import { AccessibilityRole, Text as DefaultText } from "react-native";
 
 import Fonts from "@/constants/Fonts";
-import { useThemeColors } from "@/hooks/theme/useThemedColors";
 import { useThemedStyles } from "@/hooks/theme/useThemedStyles";
 
 export type TextProps = DefaultText["props"] & {

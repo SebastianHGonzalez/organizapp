@@ -3,7 +3,11 @@ import { Result } from "./Store";
 
 const taskStatusSchema = z.enum(["completed", "skipped", "not_completed"]);
 
-const taskTypeSchema = z.enum(["task", "project", "goal", "habit", "note"]);
+const taskTypeSchema = z.enum(["task", "project", "event", "routine", "goal", "budget"]);
+export type TaskType = z.infer<typeof taskTypeSchema>;
+
+const taskLogTypeSchema = z.enum(["status", "expense", "income"]);
+export type TaskLogType = z.infer<typeof taskLogTypeSchema>;
 
 const prioritySchema = z.enum(["low", "medium", "high"]);
 
@@ -32,8 +36,10 @@ export const taskLogSchema = z
   .object({
     id: taskLogIdSchema,
     type: z.literal("taskLog"),
+    taskLogType: taskLogTypeSchema,
     notes: z.string().optional(),
-    status: taskStatusSchema,
+    status: taskStatusSchema.optional().default("completed"),
+    amount: z.number().optional().default(0),
   })
   .merge(timestampedSchema);
 export type TaskLog = z.infer<typeof taskLogSchema>;
