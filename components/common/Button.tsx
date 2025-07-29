@@ -1,10 +1,8 @@
 import { Text } from "@/components/common/Text";
-import { Color, ThemedColors } from "@/constants/Colors";
-import { ThemedSizes } from "@/constants/Sizes";
+import { Color } from "@/constants/Colors";
 import { useThemedStyles } from "@/hooks/theme/useThemedStyles";
 import {
   StyleProp,
-  StyleSheet,
   TouchableOpacity,
   TouchableOpacityProps,
   ViewStyle,

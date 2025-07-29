@@ -7,7 +7,7 @@ class InvariantError extends Error {
 
     if (ctx) {
       this.message =
-        this.name + "\n" + "context: " + JSON.stringify(ctx, undefined, 2);
+        this.name + "\n" + msg + "\n" +"context: " + JSON.stringify(ctx, undefined, 2);
     }
   }
 }

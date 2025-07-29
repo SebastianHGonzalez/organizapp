@@ -1,9 +1,24 @@
 import { z } from "zod";
 import { Result } from "./Store";
+import { randomUUID } from "@/lib/crypto";
+
+export const dateStringSchema = z.string().regex(/\d\d\d\d-\d\d-\d\d/);
+/**
+ * eg. 2025-12-31
+ */
+type DateString = z.infer<typeof dateStringSchema>;
 
 const taskStatusSchema = z.enum(["completed", "skipped", "not_completed"]);
+export type TaskStatus = z.infer<typeof taskStatusSchema>;
 
-const taskTypeSchema = z.enum(["task", "project", "event", "routine", "goal", "budget"]);
+const taskTypeSchema = z.enum([
+  "task",
+  "project",
+  "event",
+  "routine",
+  "goal",
+  "budget",
+]);
 export type TaskType = z.infer<typeof taskTypeSchema>;
 
 const taskLogTypeSchema = z.enum(["status", "expense", "income"]);
@@ -12,6 +27,7 @@ export type TaskLogType = z.infer<typeof taskLogTypeSchema>;
 const prioritySchema = z.enum(["low", "medium", "high"]);
 
 const taskIdSchema = z.string().uuid().brand<"TaskId">();
+export type TaskId = z.infer<typeof taskIdSchema>;
 
 const taskLogIdSchema = z.string().uuid().brand<"TaskLogId">();
 
@@ -26,6 +42,9 @@ const scheduleSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
 });
+const scheduledSchema = z.object({
+  schedules: z.array(scheduleSchema).default([])
+})
 
 const timestampedSchema = z.object({
   createdAt: z.date(),
@@ -35,6 +54,7 @@ const timestampedSchema = z.object({
 export const taskLogSchema = z
   .object({
     id: taskLogIdSchema,
+    taskId: taskIdSchema,
     type: z.literal("taskLog"),
     taskLogType: taskLogTypeSchema,
     notes: z.string().optional(),
@@ -47,30 +67,31 @@ export type TaskLog = z.infer<typeof taskLogSchema>;
 export const taskSchema = z
   .object({
     id: taskIdSchema,
-    parentTaskId: taskIdSchema.optional(),
     type: z.literal("task"),
     taskType: taskTypeSchema.default("task"),
 
     name: z.string(),
-    description: z.string().optional(),
 
     priority: prioritySchema.optional(),
     color: z.string().optional(),
-    tags: z.array(z.string()).optional().default([]),
-
-    logs: z.array(taskLogSchema).optional().default([]),
   })
-  .merge(scheduleSchema)
+  .merge(scheduledSchema)
   .merge(timestampedSchema);
 export type Task = z.infer<typeof taskSchema>;
 
+export const listTasksForDateSchema = z.object({
+  date: dateStringSchema,
+});
+type ListTasksForDate = z.infer<typeof listTasksForDateSchema>;
+
+export const getTaskSchema = taskSchema.pick({ id: true });
+type GetTask = z.infer<typeof getTaskSchema>;
+
 export const createTaskSchema = taskSchema.pick({
   name: true,
-  description: true,
-  startDate: true,
-  endDate: true,
-  priority: true,
-});
+}).merge(
+  scheduleSchema
+);
 export type CreateTask = z.infer<typeof createTaskSchema>;
 
 export const updateTaskSchema = taskSchema.partial();
@@ -87,14 +108,86 @@ export const markTaskSchema = z.object({
 });
 export type MarkTask = z.infer<typeof markTaskSchema>;
 
+const taskViewSchema = taskLogSchema.pick({ status: true }).merge(taskSchema);
+export type TaskView = z.infer<typeof taskViewSchema>;
+
 type ValidationError = { type: "ValidationError" };
 type NotFoundError = { type: "NotFoundError" };
 
 export interface TasksStore {
   tasks: Task[];
-  createTask(task: CreateTask): Result<Task, ValidationError>;
-  updateTask(task: UpdateTask): Result<Task, ValidationError | NotFoundError>;
-  deleteTask(task: DeleteTask): Result<void, ValidationError | NotFoundError>;
+  taskLogs: TaskLog[];
 
-  markTask(task: MarkTask): Result<Task, ValidationError | NotFoundError>;
+  /**
+   * @param date format: yyyy-mm-dd eg. 2025-12-31
+   */
+  listTasksForDate(
+    query: ListTasksForDate
+  ): Result<TaskView[], ValidationError>;
+  getTask(query: GetTask): Result<Task, ValidationError | NotFoundError>;
+
+  createTask(mutation: CreateTask): Result<Task, ValidationError>;
+  updateTask(
+    mutation: UpdateTask
+  ): Result<Task, ValidationError | NotFoundError>;
+  deleteTask(
+    mutation: DeleteTask
+  ): Result<void, ValidationError | NotFoundError>;
+  markTask(
+    mutation: MarkTask
+  ): Result<TaskLog, ValidationError | NotFoundError>;
+}
+
+export function createTask(mutation: CreateTask): Task {
+  return {
+    id: randomUUID() as Task["id"],
+    type: "task",
+    taskType: "task",
+    name: mutation.name,
+    color: undefined,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    schedules: [
+      {
+        startDate: mutation.startDate,
+        endDate: mutation.endDate,
+      }
+    ]
+  };
+}
+
+export function createTaskLog(mutation: MarkTask): TaskLog {
+  return {
+    id: randomUUID() as TaskLog["id"],
+    type: "taskLog",
+    taskLogType: "status",
+    taskId: mutation.id,
+    status: mutation.status,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    amount: 0,
+  };
+}
+
+export function isActiveOnDate(task: Task, date: DateString) {
+  // TODO: Add days of week criteria
+  return task.schedules.some(schedule => isDateBetween(date, schedule.startDate, schedule.endDate));
+}
+
+function isDateBetween(
+  date: string | number | Date,
+  start: string | number | Date = 0,
+  end: string | number | Date = 1000000000000000
+) {
+  const targetTimestamp = getTimestamp(date);
+  const startTimestamp = getTimestamp(start);
+  const endTimestamp = getTimestamp(end);
+
+  return startTimestamp < targetTimestamp && targetTimestamp < endTimestamp;
+}
+
+function getTimestamp(date: string | number | Date) {
+  if (typeof date === "number") return date;
+  if (typeof date === "string") return new Date(date).getTime();
+  return date.getTime();
 }

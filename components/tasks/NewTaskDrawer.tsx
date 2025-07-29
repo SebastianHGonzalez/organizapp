@@ -14,7 +14,6 @@ import RoutineIcon from "@/assets/svg/routine-icon.svg";
 import { ActionButton } from "@/components/common/ActionButton";
 import { Drawer } from "@/components/common/Drawer";
 import { Text } from "@/components/common/Text";
-import { View } from "@/components/common/View";
 import { Color } from "@/constants/Colors";
 import { useThemedStyles } from "@/hooks/theme/useThemedStyles";
 import { t } from "@/i18n/t";
@@ -138,22 +137,22 @@ function NewTaskDrawerButton({
   const pathname = taskLogType ? "/(tabs)/new-task-log" : "/(tabs)/new-task";
 
   return (
-      <Link
-        asChild
-        href={{
-          pathname,
-          params: { taskType, taskLogType },
-        }}
+    <Link
+      asChild
+      href={{
+        pathname,
+        params: { taskType, taskLogType },
+      }}
+    >
+      <ActionButton
+        label={label}
+        color={color}
+        buttonStyle={themedStyles.button}
+        style={themedStyles.listItem}
       >
-        <ActionButton
-          label={label}
-          color={color}
-          buttonStyle={themedStyles.button}
-          style={themedStyles.listItem}
-        >
-          {icon}
-        </ActionButton>
-      </Link>
+        {icon}
+      </ActionButton>
+    </Link>
   );
 }
 

@@ -3,6 +3,8 @@ import { useTasks } from "../useTasks";
 import type { Task } from "../../../model/Task";
 import { storeResetFns } from "../../../__mocks__/zustand";
 
+const today = "2025-12-31" as const;
+
 describe(useTasks, () => {
   beforeEach(() => {
     // Reset zustand stores to avoid state leakage between tests
@@ -11,7 +13,9 @@ describe(useTasks, () => {
 
   it("should return a list of tasks", () => {
     const screen = renderHook(useTasks);
-    expect(screen.result.current.tasks).toHaveLength(0);
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data
+    ).toHaveLength(0);
   });
 
   it("should create a task with only required fields", () => {
@@ -20,30 +24,16 @@ describe(useTasks, () => {
       const result = screen.result.current.createTask({ name: "myTask" });
       expect(result.success).toBe(true);
       expect(result.data!.name).toBe("myTask");
+      expect(
+        screen.result.current.getTask({ id: result.data!.id }).data
+      ).toMatchObject(result.data!);
     });
-    expect(screen.result.current.tasks).toHaveLength(1);
-    expect(screen.result.current.tasks[0].name).toBe("myTask");
-  });
-
-  it("should create a task with all fields", () => {
-    const screen = renderHook(useTasks);
-    const now = new Date();
-    act(() => {
-      const result = screen.result.current.createTask({
-        name: "fullTask",
-        description: "desc",
-        priority: "high",
-        startDate: now,
-        endDate: now,
-      });
-      expect(result.success).toBe(true);
-      expect(result.data!.name).toBe("fullTask");
-      expect(result.data!.description).toBe("desc");
-      expect(result.data!.priority).toBe("high");
-      expect(result.data!.startDate).toEqual(now);
-      expect(result.data!.endDate).toEqual(now);
-    });
-    expect(screen.result.current.tasks).toHaveLength(1);
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data
+    ).toHaveLength(1);
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data!.at(0)!.name
+    ).toBe("myTask");
   });
 
   it("should not create a task with invalid data", () => {
@@ -54,7 +44,9 @@ describe(useTasks, () => {
       expect(result.success).toBe(false);
       expect(result.error!.type).toBe("ValidationError");
     });
-    expect(screen.result.current.tasks).toHaveLength(0);
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data
+    ).toHaveLength(0);
   });
 
   it("should update an existing task", () => {
@@ -74,7 +66,9 @@ describe(useTasks, () => {
       expect(updateResult.success).toBe(true);
       expect(updateResult.data!.name).toBe("updated");
     });
-    expect(screen.result.current.tasks[0].name).toBe("updated");
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data!.at(0)!.name
+    ).toBe("updated");
   });
 
   it("should not update a non-existent task", () => {
@@ -122,7 +116,9 @@ describe(useTasks, () => {
       const deleteResult = screen.result.current.deleteTask({ id });
       expect(deleteResult.success).toBe(true);
     });
-    expect(screen.result.current.tasks).toHaveLength(0);
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data
+    ).toHaveLength(0);
   });
 
   it("should not delete a non-existent task", () => {
@@ -155,13 +151,15 @@ describe(useTasks, () => {
       const createResult = screen.result.current.createTask({ name: "toMark" });
       id = createResult.success ? createResult.data.id : ("" as Task["id"]);
     });
-    ["completed", "skipped", "not_completed"].forEach((status) => {
-      expect(() => {
-        act(() => {
-          screen.result.current.markTask({ id, status: status as any });
-        });
-      }).toThrow(/InvariantError/);
+    act(() => {
+      screen.result.current.markTask({ id, status: "completed" as any });
     });
+
+    expect(
+      screen.result.current
+        .listTasksForDate({ date: today })
+        .data!.find((task) => task.id === id)
+    ).toMatchObject({ status: "completed" });
   });
 
   it("should not mark a non-existent task", () => {
@@ -203,12 +201,14 @@ describe(useTasks, () => {
       screen.result.current.createTask({ name: "task2" });
       screen.result.current.createTask({ name: "task3" });
     });
-    expect(screen.result.current.tasks).toHaveLength(3);
-    expect(screen.result.current.tasks.map((t) => t.name)).toEqual([
-      "task1",
-      "task2",
-      "task3",
-    ]);
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data
+    ).toHaveLength(3);
+    expect(
+      screen.result.current
+        .listTasksForDate({ date: today })
+        .data!.map((t) => t.name)
+    ).toEqual(["task1", "task2", "task3"]);
   });
 
   it("should update and delete tasks in sequence", () => {
@@ -225,8 +225,12 @@ describe(useTasks, () => {
       screen.result.current.updateTask({ id: id1, name: "first-updated" });
       screen.result.current.deleteTask({ id: id2 });
     });
-    expect(screen.result.current.tasks).toHaveLength(1);
-    expect(screen.result.current.tasks[0].name).toBe("first-updated");
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data
+    ).toHaveLength(1);
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data!.at(0)!.name
+    ).toBe("first-updated");
   });
 
   it("should create a task with schedule fields", () => {
@@ -239,26 +243,8 @@ describe(useTasks, () => {
         endDate: now,
       });
       expect(result.success).toBe(true);
-      expect(result.data!.startDate).toEqual(now);
-      expect(result.data!.endDate).toEqual(now);
-    });
-  });
-
-  it("should create and update tags", () => {
-    const screen = renderHook(useTasks);
-    let id: Task["id"];
-    act(() => {
-      const res = screen.result.current.createTask({ name: "tagged" });
-      id = res.success ? res.data.id : ("" as Task["id"]);
-    });
-    act(() => {
-      const updateResult = screen.result.current.updateTask({
-        id,
-        tags: ["work", "urgent"],
-      });
-      expect(updateResult.error).toBeFalsy();
-      expect(updateResult.success).toBe(true);
-      expect(updateResult.data!.tags).toEqual(["work", "urgent"]);
+      expect(result.data!.schedules.at(0)!.startDate).toEqual(now);
+      expect(result.data!.schedules.at(0)!.endDate).toEqual(now);
     });
   });
 
