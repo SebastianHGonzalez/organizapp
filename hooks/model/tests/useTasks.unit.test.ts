@@ -3,7 +3,9 @@ import { useTasks } from "../useTasks";
 import type { Task } from "../../../model/Task";
 import { storeResetFns } from "../../../__mocks__/zustand";
 
+const yesterday = "2025-12-30" as const;
 const today = "2025-12-31" as const;
+const tomorrow = "2026-01-01" as const;
 
 describe(useTasks, () => {
   beforeEach(() => {
@@ -235,17 +237,20 @@ describe(useTasks, () => {
 
   it("should create a task with schedule fields", () => {
     const screen = renderHook(useTasks);
-    const now = new Date();
     act(() => {
       const result = screen.result.current.createTask({
         name: "scheduled",
-        startDate: now,
-        endDate: now,
+        startDate: today,
+        endDate: today,
       });
       expect(result.success).toBe(true);
-      expect(result.data!.schedules.at(0)!.startDate).toEqual(now);
-      expect(result.data!.schedules.at(0)!.endDate).toEqual(now);
+      expect(result.data!.schedules.at(0)!.startDate).toEqual(today);
+      expect(result.data!.schedules.at(0)!.endDate).toEqual(today);
     });
+
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data
+    ).toHaveLength(1);
   });
 
   it("should set and update timestamps", () => {
@@ -268,5 +273,41 @@ describe(useTasks, () => {
         createdAt.getTime()
       );
     });
+  });
+
+  it("should not list a task if it ended yesterday", () => {
+    const screen = renderHook(useTasks);
+
+    act(() => {
+      screen.result.current.createTask({
+        name: "MyTestTask",
+        endDate: yesterday,
+      });
+    });
+
+    expect(
+      screen.result.current.listTasksForDate({ date: yesterday }).data
+    ).toHaveLength(1);
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data
+    ).toHaveLength(0);
+  });
+
+  it("should not list a task if it starts tomorrow", () => {
+    const screen = renderHook(useTasks);
+
+    act(() => {
+      screen.result.current.createTask({
+        name: "MyTestTask",
+        startDate: tomorrow,
+      });
+    });
+
+    expect(
+      screen.result.current.listTasksForDate({ date: tomorrow }).data
+    ).toHaveLength(1);
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data
+    ).toHaveLength(0);
   });
 });

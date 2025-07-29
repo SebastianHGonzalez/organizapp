@@ -39,8 +39,8 @@ const scheduleSchema = z.object({
   daysOfWeek: z.array(z.number().min(0).max(6)).optional(),
   monthsOfYear: z.array(z.number().min(1).max(12)).optional(),
 
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
+  startDate: dateStringSchema.optional(),
+  endDate: dateStringSchema.optional(),
 });
 const scheduledSchema = z.object({
   schedules: z.array(scheduleSchema).default([])
@@ -183,7 +183,7 @@ function isDateBetween(
   const startTimestamp = getTimestamp(start);
   const endTimestamp = getTimestamp(end);
 
-  return startTimestamp < targetTimestamp && targetTimestamp < endTimestamp;
+  return startTimestamp <= targetTimestamp && targetTimestamp <= endTimestamp;
 }
 
 function getTimestamp(date: string | number | Date) {
