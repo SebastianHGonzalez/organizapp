@@ -157,7 +157,7 @@ describe(useTasks, () => {
       screen.result.current.markTask({
         id,
         status: "completed",
-        targetInstance: today,
+        taskInstance: today,
       });
     });
 
@@ -175,7 +175,7 @@ describe(useTasks, () => {
       const result = screen.result.current.markTask({
         id: "bb679230-9ee8-4e7d-a08e-999999999999" as Task["id"],
         status: "completed",
-        targetInstance: today,
+        taskInstance: today,
       });
 
       expect(result.success).toBe(false);
@@ -194,7 +194,7 @@ describe(useTasks, () => {
       const result = screen.result.current.markTask({
         id,
         status: "invalid" as never,
-        targetInstance: today,
+        taskInstance: today,
       });
 
       expect(result.success).toBe(false);
@@ -334,7 +334,7 @@ describe(useTasks, () => {
       screen.result.current.markTask({
         id,
         status: "completed",
-        targetInstance: today,
+        taskInstance: today,
       });
     });
 

@@ -8,8 +8,8 @@ export const dateStringSchema = z.string().regex(/\d\d\d\d-\d\d-\d\d/);
  */
 type DateString = z.infer<typeof dateStringSchema>;
 
-const targetInstanceSchema = dateStringSchema;
-type TargetInstance = z.infer<typeof targetInstanceSchema>;
+const taskInstanceSchema = dateStringSchema;
+type TaskInstance = z.infer<typeof taskInstanceSchema>;
 
 const taskStatusSchema = z.enum(["completed", "skipped", "not_completed"]);
 export type TaskStatus = z.infer<typeof taskStatusSchema>;
@@ -46,8 +46,8 @@ const scheduleSchema = z.object({
   endDate: dateStringSchema.optional(),
 });
 const scheduledSchema = z.object({
-  schedules: z.array(scheduleSchema).default([])
-})
+  schedules: z.array(scheduleSchema).default([]),
+});
 
 const timestampedSchema = z.object({
   createdAt: z.date(),
@@ -60,7 +60,7 @@ export const taskLogSchema = z
     taskId: taskIdSchema,
     type: z.literal("taskLog"),
     taskLogType: taskLogTypeSchema,
-    targetInstance: targetInstanceSchema,
+    taskInstance: taskInstanceSchema,
     status: taskStatusSchema.optional().default("completed"),
 
     notes: z.string().optional(),
@@ -92,11 +92,11 @@ type ListTasksForDate = z.infer<typeof listTasksForDateSchema>;
 export const getTaskSchema = taskSchema.pick({ id: true });
 type GetTask = z.infer<typeof getTaskSchema>;
 
-export const createTaskSchema = taskSchema.pick({
-  name: true,
-}).merge(
-  scheduleSchema
-);
+export const createTaskSchema = taskSchema
+  .pick({
+    name: true,
+  })
+  .merge(scheduleSchema);
 export type CreateTask = z.infer<typeof createTaskSchema>;
 
 export const updateTaskSchema = taskSchema.partial();
@@ -110,11 +110,13 @@ export type DeleteTask = z.infer<typeof deleteTaskSchema>;
 export const markTaskSchema = z.object({
   id: taskIdSchema,
   status: taskStatusSchema,
-  targetInstance: targetInstanceSchema,
+  taskInstance: taskInstanceSchema,
 });
 export type MarkTask = z.infer<typeof markTaskSchema>;
 
-const taskViewSchema = taskLogSchema.pick({ status: true }).merge(taskSchema);
+const taskViewSchema = taskLogSchema
+  .pick({ status: true, taskInstance: true })
+  .merge(taskSchema);
 export type TaskView = z.infer<typeof taskViewSchema>;
 
 type ValidationError = { type: "ValidationError" };
@@ -144,7 +146,7 @@ export interface TasksStore {
   ): Result<TaskLog, ValidationError | NotFoundError>;
 }
 
-export function createTask(mutation: CreateTask): Task {
+export function makeTask(mutation: CreateTask): Task {
   return {
     id: randomUUID() as Task["id"],
     type: "task",
@@ -157,32 +159,46 @@ export function createTask(mutation: CreateTask): Task {
       {
         startDate: mutation.startDate,
         endDate: mutation.endDate,
-      }
-    ]
+      },
+    ],
   };
 }
 
-export function createTaskLog(mutation: MarkTask): TaskLog {
+export function makeTaskLog(mutation: MarkTask): TaskLog {
   return {
     id: randomUUID() as TaskLog["id"],
     type: "taskLog",
     taskLogType: "status",
     taskId: mutation.id,
     status: mutation.status,
-    targetInstance: mutation.targetInstance,
+    taskInstance: mutation.taskInstance,
     createdAt: new Date(),
     updatedAt: new Date(),
     amount: 0,
   };
 }
 
-export function isTaskLogTarget(taskLog: TaskLog, target: TargetInstance) {
-  return taskLog.targetInstance === target;
+export function makeTaskView(
+  task: Task,
+  taskInstance: TaskInstance,
+  status: TaskStatus = "not_completed"
+): TaskView {
+  return {
+    ...task,
+    status,
+    taskInstance,
+  };
+}
+
+export function isTaskLogTarget(taskLog: TaskLog, taskInstance: TaskInstance) {
+  return taskLog.taskInstance === taskInstance;
 }
 
 export function isActiveOnDate(task: Task, date: DateString) {
   // TODO: Add days of week criteria
-  return task.schedules.some(schedule => isDateBetween(date, schedule.startDate, schedule.endDate));
+  return task.schedules.some((schedule) =>
+    isDateBetween(date, schedule.startDate, schedule.endDate)
+  );
 }
 
 function isDateBetween(
@@ -190,11 +206,11 @@ function isDateBetween(
   start: string | number | Date = 0,
   end: string | number | Date = 1000000000000000
 ) {
-  const targetTimestamp = getTimestamp(date);
+  const timestamp = getTimestamp(date);
   const startTimestamp = getTimestamp(start);
   const endTimestamp = getTimestamp(end);
 
-  return startTimestamp <= targetTimestamp && targetTimestamp <= endTimestamp;
+  return startTimestamp <= timestamp && timestamp <= endTimestamp;
 }
 
 function getTimestamp(date: string | number | Date) {

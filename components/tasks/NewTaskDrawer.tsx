@@ -36,7 +36,7 @@ const newTaskDrawerStoreCreator: StateCreator<NewTaskDrawerStore> = (set) => ({
 });
 
 export const useNewTaskDrawer = create<NewTaskDrawerStore>()(
-  devtools(newTaskDrawerStoreCreator)
+  devtools(newTaskDrawerStoreCreator),
 );
 
 export function NewTaskDrawer() {

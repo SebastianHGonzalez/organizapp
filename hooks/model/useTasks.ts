@@ -2,11 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create, StateCreator } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
-import { randomUUID } from "@/lib/crypto";
-import { invariant } from "@/lib/invariant";
 import {
-  createTask,
-  createTaskLog,
+  makeTask,
+  makeTaskLog,
   createTaskSchema,
   deleteTaskSchema,
   getTaskSchema,
@@ -17,10 +15,10 @@ import {
   Task,
   TaskId,
   TaskLog,
-  taskLogSchema,
   TasksStore,
   TaskStatus,
-  updateTaskSchema
+  updateTaskSchema,
+  makeTaskView,
 } from "@/model/Task";
 
 const tasksStoreCreator: StateCreator<TasksStore> = (set, get) => ({
@@ -49,10 +47,9 @@ const tasksStoreCreator: StateCreator<TasksStore> = (set, get) => ({
       {} as Record<TaskId, TaskStatus>
     );
 
-    const data = tasks.map((task) => ({
-      ...task,
-      status: taskStatusById[task.id] || "not_completed",
-    }));
+    const data = tasks.map((task) =>
+      makeTaskView(task, parsedQuery.data.date, taskStatusById[task.id])
+    );
 
     return { success: true, data };
   },
@@ -86,12 +83,11 @@ const tasksStoreCreator: StateCreator<TasksStore> = (set, get) => ({
       };
     }
 
-    const newTask = createTask(parseResult.data);
+    const newTask = makeTask(parseResult.data);
 
-    set((prevState) => ({
-      ...prevState,
-      tasks: [...prevState.tasks, newTask],
-    }));
+    set({
+      tasks: get().tasks.concat(newTask),
+    });
 
     return { success: true, data: newTask };
   },
@@ -145,7 +141,11 @@ const tasksStoreCreator: StateCreator<TasksStore> = (set, get) => ({
     if (!parsedMutation.success) {
       return {
         success: false,
-        error: { type: "ValidationError", error: parsedMutation.error, mutation },
+        error: {
+          type: "ValidationError",
+          error: parsedMutation.error,
+          mutation,
+        },
       };
     }
     const tasks = get().tasks;
@@ -154,7 +154,7 @@ const tasksStoreCreator: StateCreator<TasksStore> = (set, get) => ({
       return { success: false, error: { type: "NotFoundError", mutation } };
     }
 
-    const newLog = createTaskLog(parsedMutation.data);
+    const newLog = makeTaskLog(parsedMutation.data);
 
     set({ taskLogs: get().taskLogs.concat(newLog) });
 
