@@ -8,6 +8,9 @@ export const dateStringSchema = z.string().regex(/\d\d\d\d-\d\d-\d\d/);
  */
 type DateString = z.infer<typeof dateStringSchema>;
 
+const targetInstanceSchema = dateStringSchema;
+type TargetInstance = z.infer<typeof targetInstanceSchema>;
+
 const taskStatusSchema = z.enum(["completed", "skipped", "not_completed"]);
 export type TaskStatus = z.infer<typeof taskStatusSchema>;
 
@@ -57,8 +60,10 @@ export const taskLogSchema = z
     taskId: taskIdSchema,
     type: z.literal("taskLog"),
     taskLogType: taskLogTypeSchema,
-    notes: z.string().optional(),
+    targetInstance: targetInstanceSchema,
     status: taskStatusSchema.optional().default("completed"),
+
+    notes: z.string().optional(),
     amount: z.number().optional().default(0),
   })
   .merge(timestampedSchema);
@@ -105,6 +110,7 @@ export type DeleteTask = z.infer<typeof deleteTaskSchema>;
 export const markTaskSchema = z.object({
   id: taskIdSchema,
   status: taskStatusSchema,
+  targetInstance: targetInstanceSchema,
 });
 export type MarkTask = z.infer<typeof markTaskSchema>;
 
@@ -163,10 +169,15 @@ export function createTaskLog(mutation: MarkTask): TaskLog {
     taskLogType: "status",
     taskId: mutation.id,
     status: mutation.status,
+    targetInstance: mutation.targetInstance,
     createdAt: new Date(),
     updatedAt: new Date(),
     amount: 0,
   };
+}
+
+export function isTaskLogTarget(taskLog: TaskLog, target: TargetInstance) {
+  return taskLog.targetInstance === target;
 }
 
 export function isActiveOnDate(task: Task, date: DateString) {

@@ -36,7 +36,7 @@ const newTaskDrawerStoreCreator: StateCreator<NewTaskDrawerStore> = (set) => ({
 });
 
 export const useNewTaskDrawer = create<NewTaskDrawerStore>()(
-  devtools(newTaskDrawerStoreCreator),
+  devtools(newTaskDrawerStoreCreator)
 );
 
 export function NewTaskDrawer() {
@@ -44,7 +44,7 @@ export function NewTaskDrawer() {
   const { isOpen, close } = useNewTaskDrawer();
 
   return (
-    <Drawer onClose={close} isOpen={true}>
+    <Drawer onClose={close} isOpen={isOpen}>
       <Text variant="heading3" style={themedStyle.heading}>
         {t("newTaskDrawer.header")}
       </Text>

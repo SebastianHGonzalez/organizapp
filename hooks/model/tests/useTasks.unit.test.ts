@@ -154,7 +154,11 @@ describe(useTasks, () => {
       id = createResult.success ? createResult.data.id : ("" as Task["id"]);
     });
     act(() => {
-      screen.result.current.markTask({ id, status: "completed" as any });
+      screen.result.current.markTask({
+        id,
+        status: "completed",
+        targetInstance: today,
+      });
     });
 
     expect(
@@ -171,6 +175,7 @@ describe(useTasks, () => {
       const result = screen.result.current.markTask({
         id: "bb679230-9ee8-4e7d-a08e-999999999999" as Task["id"],
         status: "completed",
+        targetInstance: today,
       });
 
       expect(result.success).toBe(false);
@@ -188,7 +193,8 @@ describe(useTasks, () => {
     act(() => {
       const result = screen.result.current.markTask({
         id,
-        status: "invalid" as any,
+        status: "invalid" as never,
+        targetInstance: today,
       });
 
       expect(result.success).toBe(false);
@@ -309,5 +315,37 @@ describe(useTasks, () => {
     expect(
       screen.result.current.listTasksForDate({ date: today }).data
     ).toHaveLength(0);
+  });
+
+  it("should list a task as completed only on the target day", () => {
+    const screen = renderHook(useTasks);
+
+    act(() => {
+      screen.result.current.createTask({
+        name: "MyTestTask",
+      });
+    });
+
+    act(() => {
+      const id = screen.result.current
+        .listTasksForDate({ date: yesterday })
+        .data!.at(0)!.id;
+
+      screen.result.current.markTask({
+        id,
+        status: "completed",
+        targetInstance: today,
+      });
+    });
+
+    expect(
+      screen.result.current.listTasksForDate({ date: yesterday }).data!.at(0)
+    ).toMatchObject({ status: "not_completed" });
+    expect(
+      screen.result.current.listTasksForDate({ date: today }).data!.at(0)
+    ).toMatchObject({ status: "completed" });
+    expect(
+      screen.result.current.listTasksForDate({ date: tomorrow }).data!.at(0)
+    ).toMatchObject({ status: "not_completed" });
   });
 });

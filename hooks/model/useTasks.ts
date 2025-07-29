@@ -11,6 +11,7 @@ import {
   deleteTaskSchema,
   getTaskSchema,
   isActiveOnDate,
+  isTaskLogTarget,
   listTasksForDateSchema,
   markTaskSchema,
   Task,
@@ -40,6 +41,8 @@ const tasksStoreCreator: StateCreator<TasksStore> = (set, get) => ({
     );
     const taskStatusById = get().taskLogs.reduce(
       (acc, curr) => {
+        if (!isTaskLogTarget(curr, parsedQuery.data.date)) return acc;
+
         acc[curr.taskId] = curr.status;
         return acc;
       },
@@ -48,7 +51,7 @@ const tasksStoreCreator: StateCreator<TasksStore> = (set, get) => ({
 
     const data = tasks.map((task) => ({
       ...task,
-      status: taskStatusById[task.id],
+      status: taskStatusById[task.id] || "not_completed",
     }));
 
     return { success: true, data };
